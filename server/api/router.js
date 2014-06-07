@@ -1,8 +1,9 @@
 'use strict';
 
-var express = require('express');
+var
+    express = require('express'),
 
-var apiRouter = express.Router();
+    apiRouter = express.Router();
 
 apiRouter
     .get('*', function (req, res) {

@@ -1,10 +1,11 @@
 'use strict';
 
-var CLIENT_SETTINGS = require('./client-settings');
+var
+    CLIENT_SETTINGS = require('./client-settings'),
 
-var express = require('express');
+    express = require('express'),
 
-var router = express.Router();
+    router = express.Router();
 
 router
     .get('*', function (req, res) {

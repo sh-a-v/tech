@@ -1,6 +1,11 @@
 'use strict';
 
-var path = require('path');
+var
+    path = require('path'),
 
-exports.STATIC_FILES_PATH = path.join(__dirname, '..', 'client');
-exports.BASE_TEMPLATE_PATH = path.join(__dirname, '..', 'client/templates/server.base.html');
+    CLIENT_SETTINGS = {
+        STATIC_FILES_PATH: path.join(__dirname, '..', 'client'),
+        BASE_TEMPLATE_PATH: path.join(__dirname, '..', 'client/templates/server.base.html')
+    };
+
+module.exports = CLIENT_SETTINGS;
