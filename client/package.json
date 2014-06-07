@@ -1,0 +1,13 @@
+{
+    "name": "tech-client",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "gulp": "3.7.0",
+        "gulp-util": "*",
+        "gulp-concat": "*",
+        "gulp-uglify": "*",
+        "gulp-angular-templatecache": "*",
+        "gulp-stylus": "*"
+    }
+}
