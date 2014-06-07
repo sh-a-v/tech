@@ -1,10 +1,21 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
+<html ng-app="app">
+<head>
     <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/app.build.css">
 </head>
 <body>
-
+<div class="s-menu-wrapper">
+    <div class="s-menu-navigation">
+        <a ui-sref="cabinet" ui-sref-active="active" class="s-menu-navigation-el"><i class="s-icon"></i><span class="s-menu-navigation-el-title">Кабинет</span></a>
+        <a ui-sref="catalog" ui-sref-active="active" class="s-menu-navigation-el"><i class="s-icon"></i><span class="s-menu-navigation-el-title">Каталог</span></a>
+    </div>
+    <div class="s-menu"></div>
+</div>
+<div ui-view></div>
+<script src="/scripts/lib.build.min.js"></script>
+<script src="/scripts/app.build.js"></script>
 </body>
 </html>
