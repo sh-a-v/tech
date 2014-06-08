@@ -24,6 +24,7 @@ var
         scriptsAppFolder: 'scripts/app/',
         scriptsAppFiles: [
             'scripts/app/init.js',
+            'scripts/app/*.js',
             'templates/client.build.js',
             'scripts/app/*/*.js',
             '!scripts/lib/*'

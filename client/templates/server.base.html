@@ -3,18 +3,30 @@
 <head>
     <title></title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
     <link rel="stylesheet" href="/stylesheets/app.build.css">
 </head>
-<body>
-<div class="s-menu-wrapper">
+<body ng-controller="AppCtrl">
+    <section class="s-app-container">
+        <header class="s-header">
+            <div ng-click="toggleMenu()" class="s-header-button s-header-button-menu"><i class="s-icon s-icon-menu"></i></div>
+        </header>
+        <main class="s-main desktop-menu-active" ng-class="{'desktop-menu-active': isDesktopMenuActive(), 'phone-menu-active': isPhoneMenuActive()}">
+            <nav ng-controller="MenuCtrl" class="s-menu">menumenu menu</nav>
+            <section class="s-content">
+                <div class="s-content-inner-wrapper"></div>
+            </section>
+        </main>
+    </section>
+
+<div class="s-menu-wrapper" style="display: none;">
     <div class="s-menu-navigation">
         <a ui-sref="cabinet" ui-sref-active="active" class="s-menu-navigation-el"><i class="s-icon"></i><span class="s-menu-navigation-el-title">Кабинет</span></a>
         <a ui-sref="catalog" ui-sref-active="active" class="s-menu-navigation-el"><i class="s-icon"></i><span class="s-menu-navigation-el-title">Каталог</span></a>
     </div>
     <div class="s-menu"></div>
 </div>
-<div ui-view></div>
+<div ui-view style="display: none;"></div>
 <script src="/scripts/lib.build.min.js"></script>
 <script src="/scripts/app.build.js"></script>
 </body>

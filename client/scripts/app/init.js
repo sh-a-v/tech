@@ -1,8 +1,8 @@
 'use strict';
 
-var app = angular.module('app', ['ui.router']);
+var app = angular.module('app', ['ui.router', 'menu']);
 
-app.config(function($stateProvider, $locationProvider) {
+app.config( function ($stateProvider, $locationProvider) {
     $stateProvider
         .state('cabinet', {
             url: '/cabinet/',
@@ -12,6 +12,7 @@ app.config(function($stateProvider, $locationProvider) {
             url: '/catalog/',
             templateUrl: 'catalog.html'
         });
+
     $locationProvider
         .html5Mode(true);
 });
