@@ -1,0 +1,20 @@
+.s-main
+  display inline-block
+  position relative
+  width 100%
+  height 100%
+  box-sizing border-box
+  padding 0 0 header-height
+  transition all 0.3s
+
+  @media media-desktop
+    left menu-width * -0.5
+
+    &.desktop-menu-active
+      left 0
+
+  @media media-tablet, media-phone
+    left menu-width * -1
+
+    &.phone-menu-active
+      left 0
