@@ -1,5 +1,9 @@
 
 menu
-    .directive('techMenu', ['$scope', function ($scope) {
-
-    }]);
+    .directive('menuView', function () {
+        return {
+            restrict: 'A',
+            templateUrl: 'menu.html',
+            controller: 'MenuCtrl'
+        };
+    });
