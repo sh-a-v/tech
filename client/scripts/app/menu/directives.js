@@ -1,4 +1,3 @@
-
 menu
     .directive('menuView', function () {
         return {

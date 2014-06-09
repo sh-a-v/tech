@@ -23,7 +23,7 @@ var
         ],
         scriptsAppFolder: 'scripts/app/',
         scriptsAppFiles: [
-            'scripts/app/app.js',
+            'scripts/app/init.js',
             'templates/client.build.js',
             'scripts/app/*.js',
             'scripts/app/*/module.js',
