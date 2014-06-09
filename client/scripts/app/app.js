@@ -21,7 +21,7 @@ app
 
     .controller('AppCtrl', ['$scope', '$window', function ($scope, $window) {
         $scope.desktopMenuActive = true;
-        $scope.phoneMenuActive = false;
+        $scope.mobileMenuActive = false;
 
         $scope.isDesktopWidth = function () {
             return $window.innerWidth > 1024;
@@ -30,15 +30,15 @@ app
         $scope.isDesktopMenuActive = function () {
             return $scope.desktopMenuActive;
         };
-        $scope.isPhoneMenuActive = function () {
-            return $scope.phoneMenuActive;
+        $scope.isMobileMenuActive = function () {
+            return $scope.mobileMenuActive;
         };
 
         $scope.toggleMenu = function () {
             if ($scope.isDesktopWidth()) {
                 $scope.desktopMenuActive = !$scope.desktopMenuActive;
             } else {
-                $scope.phoneMenuActive = !$scope.phoneMenuActive;
+                $scope.mobileMenuActive = !$scope.mobileMenuActive;
             }
         };
     }]);

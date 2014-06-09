@@ -11,8 +11,10 @@
         <header class="s-header">
             <div ng-click="toggleMenu()" class="s-header-button s-header-button-menu"><i class="s-icon s-icon-menu"></i></div>
         </header>
-        <main class="s-main desktop-menu-active" ng-class="{'desktop-menu-active': isDesktopMenuActive(), 'phone-menu-active': isPhoneMenuActive()}">
-            <nav ng-controller="MenuCtrl" class="s-menu">menumenu menu</nav>
+        <main class="s-main desktop-menu-active" ng-class="{'desktop-menu-active': isDesktopMenuActive(), 'mobile-menu-active': isMobileMenuActive()}">
+            <nav ng-controller="MenuCtrl" class="s-menu">
+                <div class="s-menu-inner-wrapper"></div>
+            </nav>
             <section class="s-content">
                 <div class="s-content-inner-wrapper"></div>
             </section>
