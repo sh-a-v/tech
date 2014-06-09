@@ -11,7 +11,7 @@ var
         /* Stylesheets */
         stylesheetsFolder: 'stylesheets/',
         stylusFiles: [
-            'stylesheets/stylus/_vars/*.styl',
+            'stylesheets/stylus/vars/*.styl',
             'stylesheets/stylus/*.styl'
         ],
 
@@ -26,6 +26,7 @@ var
             'scripts/app/app.js',
             'templates/client.build.js',
             'scripts/app/*.js',
+            'scripts/app/*/module.js',
             'scripts/app/*/*.js',
             '!scripts/lib/*'
         ],

@@ -6,6 +6,12 @@ var
 app
     .config( function ($stateProvider, $locationProvider) {
         $stateProvider
+            .state('index', {
+                url: '/',
+                views: {
+                    'viewMenu': { templateUrl: 'menu.html' }
+                }
+            })
             .state('cabinet', {
                 url: '/cabinet/',
                 templateUrl: 'cabinet.html'
@@ -43,7 +49,11 @@ app
         };
     }]);
 angular.module("app").run(["$templateCache", function($templateCache) {$templateCache.put("cabinet.html","<h1>Cabinet</h1>\n");
-$templateCache.put("catalog.html","<h1>Catalog</h1>");}]);
+$templateCache.put("catalog.html","<h1>Catalog</h1>");
+$templateCache.put("menu.html","<div class=\"s-menu-inner-wrapper\">\n    <p>mmmmmmm</p>\n</div>");}]);
+
+var
+    menu = angular.module('menu', ['ui.router']);
 /**
  * Controllers
  */
@@ -59,9 +69,6 @@ $templateCache.put("catalog.html","<h1>Catalog</h1>");}]);
  * Services
  */
 
-
-var
-    menu = angular.module('menu', ['ui.router']);
 
 menu
     .controller('MenuCtrl', ['$scope', function ($scope) {

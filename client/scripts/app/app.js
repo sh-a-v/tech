@@ -6,6 +6,12 @@ var
 app
     .config( function ($stateProvider, $locationProvider) {
         $stateProvider
+            .state('index', {
+                url: '/',
+                views: {
+                    'viewMenu': { templateUrl: 'menu.html' }
+                }
+            })
             .state('cabinet', {
                 url: '/cabinet/',
                 templateUrl: 'cabinet.html'
