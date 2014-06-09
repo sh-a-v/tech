@@ -2,6 +2,7 @@
 
 var
     CLIENT_SETTINGS = require('./client-settings'),
+    SETTINGS = require('./settings'),
 
     express = require('express'),
     router = require('./router'),
@@ -20,6 +21,6 @@ app
     .use('*', router)
 
     /* Server */
-    .listen(1337, function () {
-        console.log('Express server listening on port 1337');
+    .listen(SETTINGS.port, function () {
+        console.log('Express server listening on port ' + SETTINGS.port);
     });
