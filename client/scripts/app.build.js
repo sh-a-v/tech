@@ -35,7 +35,7 @@ app
 angular.module("app").run(["$templateCache", function($templateCache) {$templateCache.put("cabinet.html","<h1>Cabinet</h1>\n");
 $templateCache.put("catalog.html","<h1>Catalog</h1>");
 $templateCache.put("collections.html","<!DOCTYPE html>\n<html>\n<head lang=\"en\">\n    <meta charset=\"UTF-8\">\n    <title></title>\n</head>\n<body>\n\n</body>\n</html>");
-$templateCache.put("menu.html","<div class=\"s-menu-inner-wrapper\">\n    <ul class=\"s-menu-list\">\n        <li class=\"s-menu-list-item\" ui-sref-active=\"active\">\n            <a class=\"s-menu-list-item-link\" ui-sref=\"search\">\n                <span class=\"s-menu-list-item-link-icon\"><i class=\"s-icon s-icon-search\"></i></span>\n                <span class=\"s-menu-list-item-link-body\">Поиск</span>\n            </a>\n        </li>\n        <li class=\"s-menu-list-item\" ui-sref-active=\"active\">\n            <a class=\"s-menu-list-item-link\" ui-sref=\"cabinet\">\n                <span class=\"s-menu-list-item-link-icon\"><i class=\"s-icon s-icon-cabinet\"></i></span>\n                <span class=\"s-menu-list-item-link-body\">Кабинет</span>\n            </a>\n        </li>\n        <li class=\"s-menu-list-item\" ui-sref-active=\"active\">\n            <a class=\"s-menu-list-item-link\" ui-sref=\"catalog\">\n                <span class=\"s-menu-list-item-link-icon\"><i class=\"s-icon s-icon-catalog\"></i></span>\n                <span class=\"s-menu-list-item-link-body\">Каталог</span>\n            </a>\n        </li>\n        <li class=\"s-menu-list-item\" ui-sref-active=\"active\">\n            <a class=\"s-menu-list-item-link\" ui-sref=\"collections\">\n                <span class=\"s-menu-list-item-link-icon\"><i class=\"s-icon s-icon-collections\"></i></span>\n                <span class=\"s-menu-list-item-link-body\">Коллекции</span>\n            </a>\n        </li>\n    </ul>\n</div>");}]);
+$templateCache.put("menu.html","<div class=\"s-menu-inner-wrapper\">\n    <ul class=\"s-menu-list\">\n        <li class=\"s-menu-list-item\" ui-sref-active=\"active\">\n            <div class=\"s-menu-list-item-head\" ng-click=\"toggleMenuItemState($event)\">\n                <a class=\"s-menu-list-item-head-link\" ui-sref=\"search\">\n                    <span class=\"s-menu-list-item-head-link-icon\"><i class=\"s-icon s-icon-search\"></i></span>\n                    <span class=\"s-menu-list-item-head-link-label\">Поиск</span>\n                </a>\n            </div>\n            <div class=\"s-menu-list-item-body\"></div>\n        </li>\n        <li class=\"s-menu-list-item\" ui-sref-active=\"active\">\n            <div class=\"s-menu-list-item-head\" ng-click=\"toggleMenuItemState($event)\">\n                <a class=\"s-menu-list-item-head-link\" ui-sref=\"cabinet\">\n                    <span class=\"s-menu-list-item-head-link-icon\"><i class=\"s-icon s-icon-cabinet\"></i></span>\n                    <span class=\"s-menu-list-item-head-link-label\">Кабинет</span>\n                </a>\n            </div>\n        </li>\n        <li class=\"s-menu-list-item\" ui-sref-active=\"active\">\n            <div class=\"s-menu-list-item-head\" ng-click=\"toggleMenuItemState($event)\">\n                <a class=\"s-menu-list-item-head-link\" ui-sref=\"catalog\">\n                    <span class=\"s-menu-list-item-head-link-icon\"><i class=\"s-icon s-icon-catalog\"></i></span>\n                    <span class=\"s-menu-list-item-head-link-label\">Каталог</span>\n                </a>\n            </div>\n        </li>\n        <li class=\"s-menu-list-item\" ui-sref-active=\"active\">\n            <div class=\"s-menu-list-item-head\" ng-click=\"toggleMenuItemState($event)\">\n                <a class=\"s-menu-list-item-head-link\" ui-sref=\"collections\">\n                    <span class=\"s-menu-list-item-head-link-icon\"><i class=\"s-icon s-icon-collections\"></i></span>\n                    <span class=\"s-menu-list-item-head-link-label\">Коллекции</span>\n                </a>\n            </div>\n        </li>\n    </ul>\n</div>");}]);
 app
     .controller('WindowSizeCtrl', ['$scope', '$window', function ($scope, $window) {
         $scope.isWindowDesktopWidth = function () {
@@ -56,7 +56,7 @@ app
             mobileMenuActive: false
         };
 
-        $scope.toggleMenu = function () {
+        $scope.toggleMenuState = function () {
             if ($scope.isWindowDesktopWidth()) {
                 $scope.menuState.desktopMenuActive = !$scope.menuState.desktopMenuActive;
             } else {
@@ -119,14 +119,35 @@ var
  */
 
 menu
-    .controller('MenuCtrl', ['$scope', function ($scope) {
+    .controller('MenuCtrl', ['$scope', '$state', function ($scope, $state) {
+        $scope.menuItem = {
+            el: null,
+            activeState: !$state.is('index')
+        };
 
+        $scope.toggleMenuItemState = function ($event) {
+            $scope.menuItem.activeState = !$scope.menuItem.activeState;
+            $scope.menuItem.el = angular.element($event.currentTarget).parent();
+        };
+        $scope.getMenuItemState = function () {
+            return $scope.menuItem.activeState ? 'expanded' : 'collapsed';
+        };
     }]);
 menu
     .directive('menuView', function () {
         return {
             restrict: 'A',
             templateUrl: 'menu.html',
-            controller: 'MenuCtrl'
+            controller: 'MenuCtrl',
+            link: function (scope, elem, attrs) {
+                scope.$watch(scope.getMenuItemState, function (state) {
+                    var
+                        el = scope.menuItem.el;
+
+                    if (el) {
+                        scope.menuItem.activeState ? el.addClass('active') : el.removeClass('active');
+                    }
+                });
+            }
         };
     });

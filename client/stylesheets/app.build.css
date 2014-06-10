@@ -1,3 +1,12 @@
+html {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 .s-icon {
   display: inline-block;
   vertical-align: middle;
@@ -85,6 +94,9 @@ body {
   padding: 0;
   font: 12px Verdana;
 }
+a {
+  outline: none;
+}
 .s-app-container {
   width: 100%;
   max-width: 1600px;
@@ -103,10 +115,10 @@ body {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   padding: 0 0 50px;
-  -moz-transition: all 0.3s;
-  -o-transition: all 0.3s;
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
 }
 @media screen and (min-width: 1025px) {
   .s-main {
@@ -166,24 +178,56 @@ body {
   padding: 0;
 }
 .s-menu-list-item {
+  position: relative;
+  top: 10%;
+  left: 0;
+  display: inline-block;
+  width: 100%;
+  min-height: 50px;
+  max-height: 50px;
+  background-color: #fff;
+  -moz-transition: top 0.3s, min-height 0.3s;
+  -o-transition: top 0.3s, min-height 0.3s;
+  -webkit-transition: top 0.3s, min-height 0.3s;
+  transition: top 0.3s, min-height 0.3s;
+  z-index: 0;
+}
+.s-menu-list-item:first-child {
+  top: 0;
+}
+.s-menu-list-item-head {
   display: inline-block;
   width: 100%;
   height: 50px;
 }
-.s-menu-list-item-link {
+.s-menu-list-item-head-link {
   display: inline-table;
   width: 100%;
   height: 100%;
 }
-.s-menu-list-item-link-icon {
+.s-menu-list-item-head-link-icon {
   display: table-cell;
   width: 50px;
   height: 100%;
   vertical-align: middle;
   text-align: center;
 }
-.s-menu-list-item-link-body {
+.s-menu-list-item-head-link-label {
   display: table-cell;
   height: 100%;
   vertical-align: middle;
+}
+.s-menu-list-item-body {
+  display: none;
+}
+.s-menu-list-item.active {
+  position: absolute;
+  top: 0;
+  min-height: 100%;
+  max-height: 100%;
+  -moz-transition: top 0.3s, max-height 0.3s;
+  -o-transition: top 0.3s, max-height 0.3s;
+  -webkit-transition: top 0.3s, max-height 0.3s;
+  transition: top 0.3s, max-height 0.3s;
+  z-index: 1;
 }

@@ -18,7 +18,7 @@ app
             mobileMenuActive: false
         };
 
-        $scope.toggleMenu = function () {
+        $scope.toggleMenuState = function () {
             if ($scope.isWindowDesktopWidth()) {
                 $scope.menuState.desktopMenuActive = !$scope.menuState.desktopMenuActive;
             } else {
