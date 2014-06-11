@@ -218,7 +218,7 @@ a {
   vertical-align: middle;
 }
 .s-menu-list-item-body {
-  display: none;
+  display: inline-block;
 }
 .s-menu-list-item.active {
   position: absolute;

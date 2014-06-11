@@ -33,7 +33,10 @@ var
 
         /* Templates */
         templatesFolder: 'templates/',
-        templatesFiles: ['templates/client/*.html']
+        templatesFiles: [
+            'templates/client/*.html',
+            'templates/client/*/*.html'
+        ]
     };
 
 
