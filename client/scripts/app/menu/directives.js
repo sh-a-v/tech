@@ -1,18 +1,23 @@
 menu
-    .directive('menuView', function () {
+    .directive('menuView', ['$window', function ($window) {
         return {
             restrict: 'A',
             templateUrl: 'menu.html',
             controller: 'MenuCtrl',
             link: function (scope, elem, attrs) {
-                scope.$watch(scope.getMenuItemState, function (state) {
-                    var
-                        el = scope.menuItem.el;
-
-                    if (el) {
-                        scope.menuItem.activeState ? el.addClass('active') : el.removeClass('active');
+                scope.toggleMenuItem = function () {
+                    if (scope.menuItem && scope.menuItem.el) {
+                        scope.menuItem.activeState ? scope.menuItem.el.addClass('active') : scope.menuItem.el.removeClass('active');
                     }
-                });
+                };
+
+                setTimeout(function () {
+                    scope.initMenuItemState();
+
+                    scope.$watch(scope.getMenuItemState, function (state) {
+                        scope.toggleMenuItem();
+                    });
+                }, 0);
             }
         };
-    });
+    }]);

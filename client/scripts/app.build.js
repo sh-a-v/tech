@@ -91,13 +91,17 @@ app
                     desktopMenuClass = 'desktop-menu-active',
                     mobileMenuClass = 'mobile-menu-active';
 
-                scope.$watch(scope.getMenuStateAsString, function(state) {
+                scope.toggleMenu = function () {
                     if (scope.isWindowDesktopWidth()) {
                         scope.menuState.desktopMenuActive ? elem.addClass(desktopMenuClass) : elem.removeClass(desktopMenuClass);
                     } else {
                         scope.menuState.mobileMenuActive ? elem.addClass(mobileMenuClass) : elem.removeClass(mobileMenuClass);
                     }
-                })
+                };
+
+                scope.$watch(scope.getMenuStateAsString, function(state) {
+                    scope.toggleMenu();
+                });
             }
         };
     });
@@ -120,11 +124,12 @@ var
 
 menu
     .controller('MenuCtrl', ['$scope', '$state', function ($scope, $state) {
-        $scope.menuItem = {
-            el: null,
-            activeState: !$state.is('index')
+        $scope.initMenuItemState = function () {
+            $scope.menuItem = {
+                el: null,
+                activeState: !$state.is('index')
+            };
         };
-
         $scope.toggleMenuItemState = function ($event) {
             $scope.menuItem.activeState = !$scope.menuItem.activeState;
             $scope.menuItem.el = angular.element($event.currentTarget).parent();
@@ -134,20 +139,25 @@ menu
         };
     }]);
 menu
-    .directive('menuView', function () {
+    .directive('menuView', ['$window', function ($window) {
         return {
             restrict: 'A',
             templateUrl: 'menu.html',
             controller: 'MenuCtrl',
             link: function (scope, elem, attrs) {
-                scope.$watch(scope.getMenuItemState, function (state) {
-                    var
-                        el = scope.menuItem.el;
-
-                    if (el) {
-                        scope.menuItem.activeState ? el.addClass('active') : el.removeClass('active');
+                scope.toggleMenuItem = function () {
+                    if (scope.menuItem && scope.menuItem.el) {
+                        scope.menuItem.activeState ? scope.menuItem.el.addClass('active') : scope.menuItem.el.removeClass('active');
                     }
-                });
+                };
+
+                setTimeout(function () {
+                    scope.initMenuItemState();
+
+                    scope.$watch(scope.getMenuItemState, function (state) {
+                        scope.toggleMenuItem();
+                    });
+                }, 0);
             }
         };
-    });
+    }]);

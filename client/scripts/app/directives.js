@@ -21,13 +21,17 @@ app
                     desktopMenuClass = 'desktop-menu-active',
                     mobileMenuClass = 'mobile-menu-active';
 
-                scope.$watch(scope.getMenuStateAsString, function(state) {
+                scope.toggleMenu = function () {
                     if (scope.isWindowDesktopWidth()) {
                         scope.menuState.desktopMenuActive ? elem.addClass(desktopMenuClass) : elem.removeClass(desktopMenuClass);
                     } else {
                         scope.menuState.mobileMenuActive ? elem.addClass(mobileMenuClass) : elem.removeClass(mobileMenuClass);
                     }
-                })
+                };
+
+                scope.$watch(scope.getMenuStateAsString, function(state) {
+                    scope.toggleMenu();
+                });
             }
         };
     });
