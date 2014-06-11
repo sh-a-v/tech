@@ -1,32 +1,23 @@
 app
     .controller('WindowSizeCtrl', ['$scope', '$window', function ($scope, $window) {
-        $scope.isWindowDesktopWidth = function () {
-            return $scope.windowSize.width > 1024;
-        };
-
-        $scope.saveWindowSize = function () {
-            $scope.windowSize = {
-                width: $window.innerWidth,
-                height: $window.innerHeight
-            };
+        $scope.windowSize = {
+            width: null,
+            height: null,
+            isDesktopWidth: function () {
+                return this.width > 1024
+            },
+            saveSize: function () {
+                $scope.windowSize.width = $window.innerWidth;
+                $scope.windowSize.height = $window.innerHeight;
+            }
         };
     }])
 
-    .controller('MenuStateCtrl', ['$scope', function ($scope) {
-        $scope.menuState = {
-            desktopMenuActive: true,
-            mobileMenuActive: false
-        };
-
-        $scope.toggleMenuState = function () {
-            if ($scope.isWindowDesktopWidth()) {
-                $scope.menuState.desktopMenuActive = !$scope.menuState.desktopMenuActive;
-            } else {
-                $scope.menuState.mobileMenuActive = !$scope.menuState.mobileMenuActive;
+    .controller('MainStateCtrl', ['$scope', function ($scope) {
+        $scope.mainState = {
+            el: null,
+            initEl: function (el) {
+                this.el = el;
             }
-        };
-
-        $scope.getMenuStateAsString = function () {
-            return JSON.stringify($scope.menuState);
-        };
+        }
     }]);

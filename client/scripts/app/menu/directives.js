@@ -4,18 +4,25 @@ menu
             restrict: 'A',
             templateUrl: 'menu.html',
             controller: 'MenuCtrl',
-            link: function (scope, elem, attrs) {
-                scope.toggleMenuItem = function () {
-                    if (scope.menuItem && scope.menuItem.el) {
-                        scope.menuItem.activeState ? scope.menuItem.el.addClass('active') : scope.menuItem.el.removeClass('active');
+            link: function (scope, el, attrs) {
+                var
+                    menu = scope.menu;
+
+                menu.view = {
+                    toggleMenuItem: function () {
+                        if (menu.item && menu.item.el) {
+                            menu.item.activeState ? menu.item.el.addClass('active') : menu.item.el.removeClass('active');
+                        }
                     }
                 };
 
-                setTimeout(function () {
-                    scope.initMenuItemState();
+                menu.initEl(el);
 
-                    scope.$watch(scope.getMenuItemState, function (state) {
-                        scope.toggleMenuItem();
+                setTimeout(function () {
+                    menu.setItemState();
+
+                    scope.$watch(menu.getItemState, function (state) {
+                        menu.view.toggleMenuItem();
                     });
                 }, 0);
             }
@@ -25,28 +32,24 @@ menu
     .directive('menuItemSearch', function () {
         return {
             restrict: 'A',
-            //templateUrl: 'menu-item-search.html',
             controller: ''
         }
-    });
-    /*.directive('menuItemCabinet', function () {
+    })
+    .directive('menuItemCabinet', function () {
         return {
             restrict: 'A',
-            templateUrl: 'menu-item-cabinet.html',
             controller: ''
         }
     })
     .directive('menuItemCatalog', function () {
         return {
             restrict: 'A',
-            templateUrl: 'menu-item-catalog.html',
             controller: ''
         }
     })
     .directive('menuItemCollections', function () {
         return {
             restrict: 'A',
-            templateUrl: 'menu-item-collections.html',
             controller: ''
         }
-    });*/
+    });

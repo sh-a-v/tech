@@ -17,15 +17,15 @@ app
             })
             .state('cabinet', {
                 url: '/cabinet/',
-                templateUrl: 'cabinet.html'
+                templateUrl: 'content-pages/cabinet.html'
             })
             .state('catalog', {
                 url: '/catalog/',
-                templateUrl: 'catalog.html'
+                templateUrl: 'content-pages/catalog.html'
             })
             .state('collections', {
                 url: '/collections/',
-                templateUrl: 'collections.html'
+                templateUrl: 'content-pages/collections.html'
             });
 
         $locationProvider

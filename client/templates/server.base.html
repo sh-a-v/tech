@@ -9,9 +9,9 @@
 <body>
     <section class="s-app-container" resize>
         <header class="s-header">
-            <div ng-click="toggleMenuState()" class="s-header-button s-header-button-menu"><i class="s-icon s-icon-menu"></i></div>
+            <div ng-click="menu.toggleState()" class="s-header-button s-header-button-menu" ng-class="{active: menu.getState()}"><i class="s-icon s-icon-menu"></i></div>
         </header>
-        <main class="s-main desktop-menu-active" menu-state>
+        <main class="s-main desktop-menu-active" main-state>
             <nav class="s-menu" menu-view></nav>
             <section class="s-content">
                 <div class="s-content-inner-wrapper"></div>

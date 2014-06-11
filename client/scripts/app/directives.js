@@ -4,34 +4,46 @@ app
             restrict: 'A',
             controller: 'WindowSizeCtrl',
             link: function (scope, elem, attrs) {
-                scope.saveWindowSize();
+                var
+                    windowSize = scope.windowSize;
+
+                windowSize.saveSize();
 
                 angular.element($window)
-                    .on('resize', scope.saveWindowSize);
+                    .on('resize', windowSize.saveSize);
             }
         };
     }])
 
-    .directive('menuState', function () {
+    .directive('mainState', function () {
         return {
             restrict: 'A',
-            controller: 'MenuStateCtrl',
-            link: function (scope, elem, attrs) {
+            controller: 'MainStateCtrl',
+            link: function (scope, el, attrs) {
                 var
+                    mainState = scope.mainState,
+                    windowSize = scope.windowSize,
+
                     desktopMenuClass = 'desktop-menu-active',
                     mobileMenuClass = 'mobile-menu-active';
 
-                scope.toggleMenu = function () {
-                    if (scope.isWindowDesktopWidth()) {
-                        scope.menuState.desktopMenuActive ? elem.addClass(desktopMenuClass) : elem.removeClass(desktopMenuClass);
-                    } else {
-                        scope.menuState.mobileMenuActive ? elem.addClass(mobileMenuClass) : elem.removeClass(mobileMenuClass);
+                mainState.view = {
+                    toggleMenu: function () {
+                        if (windowSize.isDesktopWidth()) {
+                            scope.menu.state.desktopActive ? el.addClass(desktopMenuClass) : el.removeClass(desktopMenuClass);
+                        } else {
+                            scope.menu.state.mobileActive ? el.addClass(mobileMenuClass) : el.removeClass(mobileMenuClass);
+                        }
                     }
                 };
 
-                scope.$watch(scope.getMenuStateAsString, function(state) {
-                    scope.toggleMenu();
-                });
+                mainState.initEl(el);
+
+                setTimeout(function () {
+                    scope.$watch(scope.menu.getStateAsString, function() {
+                        mainState.view.toggleMenu();
+                    });
+                }, 0);
             }
-        };
+        }
     });

@@ -5,7 +5,7 @@
   height header-height
   box-sizing border-box
   background-color white
-  border-bottom 1px solid light-grey
+  border-bottom 1px solid grey
 
 .s-header-button
   display inline-block
@@ -15,7 +15,24 @@
   cursor pointer
 
   &-menu
+    position relative
     width 40px
+
+    .s-icon-menu
+      left 0
+      opacity 1.0
+      transition all 0.25s
+
+    &.active .s-icon-menu
+      left -5px
+      opacity 0.5
+
     @media media-desktop
-      &:hover
-        opacity 0.9
+      &:hover .s-icon-menu
+        opacity 0.8
+
+      &.active .s-icon-menu
+        opacity 0.2
+
+      &.active:hover .s-icon-menu
+        opacity 0.4
