@@ -5,6 +5,8 @@ var
     SETTINGS = require('./settings'),
 
     express = require('express'),
+    db = require('./db'),
+    bodyParser = require('body-parser'),
     router = require('./router'),
     apiRouter = require('./api/router'),
 
@@ -13,6 +15,9 @@ var
 app
     /* Static */
     .use(express.static(CLIENT_SETTINGS.STATIC_FILES_PATH))
+
+    /* Available POST */
+    //.use(bodyParser())
 
     /* API */
     .use('/api', apiRouter)

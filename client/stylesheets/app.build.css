@@ -206,6 +206,7 @@ a {
   min-height: 50px;
   max-height: 50px;
   background-color: #fff;
+  font-size: 0;
   -moz-transition: top 0.3s, min-height 0.3s;
   -o-transition: top 0.3s, min-height 0.3s;
   -webkit-transition: top 0.3s, min-height 0.3s;

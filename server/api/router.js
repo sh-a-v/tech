@@ -2,12 +2,13 @@
 
 var
     express = require('express'),
+    bookRouter = require('./controllers/book'),
 
     apiRouter = express.Router();
 
-apiRouter
-    .get('*', function (req, res) {
-        console.log('API');
-    });
+apiRouter.stack =
+    apiRouter.stack.concat(
+        bookRouter.stack
+    );
 
 module.exports = apiRouter;

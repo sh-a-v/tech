@@ -6,7 +6,9 @@
         "start": "node server.js"
     },
     "dependencies": {
-        "express": "4.4.1",
-        "path": ""
+        "express": "~4.4.1",
+        "path": "",
+        "mongoose": "~3.8.12",
+        "body-parser": ""
     }
 }
