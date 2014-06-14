@@ -8,9 +8,7 @@
 </head>
 <body>
     <section class="s-app-container" resize>
-        <header class="s-header">
-            <div ng-click="menu.toggleState()" class="s-header-button s-header-button-menu" ng-class="{active: menu.getState()}"><i class="s-icon s-icon-menu"></i></div>
-        </header>
+        <header class="s-header" header-view></header>
         <main class="s-main desktop-menu-active" main-state>
             <nav class="s-menu" menu-view></nav>
             <section class="s-content">

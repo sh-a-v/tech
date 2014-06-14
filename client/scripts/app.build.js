@@ -1,7 +1,7 @@
 'use strict';
 
 var
-    app = angular.module('app', ['ui.router', 'ngTouch', 'menu']);
+    app = angular.module('app', ['ui.router', 'ngTouch', 'header', 'menu']);
 
 app
     .config( function ($stateProvider, $locationProvider) {
@@ -32,7 +32,7 @@ app
             .html5Mode(true);
     });
 
-angular.module("app").run(["$templateCache", function($templateCache) {$templateCache.put("head.html","");
+angular.module("app").run(["$templateCache", function($templateCache) {$templateCache.put("header.html","<div class=\"s-header-button s-header-button-menu\" ng-click=\"menu.toggleState()\" ng-class=\"{active: menu.getState()}\"><i class=\"s-icon s-icon-menu\"></i></div>\n<div class=\"s-header-right-buttons\">\n    <div class=\"s-header-button s-header-button-user\"><i class=\"s-icon s-icon-user\"></i></div>\n</div>");
 $templateCache.put("menu.html","<div class=\"s-menu-inner-wrapper\">\n    <ul class=\"s-menu-list\">\n\n        <li class=\"s-menu-list-item\" ui-sref-active=\"active\">\n            <div class=\"s-menu-list-item-head\" ng-click=\"menu.toggleItemState($event)\">\n                <a class=\"s-menu-list-item-head-link\" ui-sref=\"search\">\n                    <span class=\"s-menu-list-item-head-link-icon\"><i class=\"s-icon s-icon-search\"></i></span>\n                    <span class=\"s-menu-list-item-head-link-label\">Поиск</span>\n                </a>\n            </div>\n            <div class=\"s-menu-list-item-body\" menu-item-search></div>\n        </li>\n\n        <li class=\"s-menu-list-item\" ui-sref-active=\"active\">\n            <div class=\"s-menu-list-item-head\" ng-click=\"menu.toggleItemState($event)\">\n                <a class=\"s-menu-list-item-head-link\" ui-sref=\"cabinet\">\n                    <span class=\"s-menu-list-item-head-link-icon\"><i class=\"s-icon s-icon-cabinet\"></i></span>\n                    <span class=\"s-menu-list-item-head-link-label\">Кабинет</span>\n                </a>\n            </div>\n            <div class=\"s-menu-list-item-body\" menu-item-cabinet></div>\n        </li>\n\n        <li class=\"s-menu-list-item\" ui-sref-active=\"active\">\n            <div class=\"s-menu-list-item-head\" ng-click=\"menu.toggleItemState($event)\">\n                <a class=\"s-menu-list-item-head-link\" ui-sref=\"catalog\">\n                    <span class=\"s-menu-list-item-head-link-icon\"><i class=\"s-icon s-icon-catalog\"></i></span>\n                    <span class=\"s-menu-list-item-head-link-label\">Каталог</span>\n                </a>\n            </div>\n            <div class=\"s-menu-list-item-body\" menu-item-catalog></div>\n        </li>\n\n        <li class=\"s-menu-list-item\" ui-sref-active=\"active\">\n            <div class=\"s-menu-list-item-head\" ng-click=\"menu.toggleItemState($event)\">\n                <a class=\"s-menu-list-item-head-link\" ui-sref=\"collections\">\n                    <span class=\"s-menu-list-item-head-link-icon\"><i class=\"s-icon s-icon-collections\"></i></span>\n                    <span class=\"s-menu-list-item-head-link-label\">Коллекции</span>\n                </a>\n            </div>\n            <div class=\"s-menu-list-item-body\" menu-item-collections></div>\n        </li>\n\n    </ul>\n</div>");
 $templateCache.put("content-pages/cabinet.html","<h1>Cabinet</h1>\n");
 $templateCache.put("content-pages/catalog.html","<h1>Catalog</h1>");
@@ -110,6 +110,8 @@ app
         }
     });
 var
+    header = angular.module('header', []);
+var
     menu = angular.module('menu', ['ui.router']);
 /**
  * Controllers
@@ -126,6 +128,20 @@ var
  * Services
  */
 
+header
+    .controller('HeaderCtrl', ['$scope', function ($scope) {
+        $scope.header = {
+
+        };
+    }]);
+header
+    .directive('headerView', function () {
+        return {
+            restrict: 'A',
+            templateUrl: 'header.html',
+            controller: 'HeaderCtrl'
+        }
+    });
 menu
     .controller('MenuCtrl', ['$scope', '$state', function ($scope, $state) {
         $scope.menu = {

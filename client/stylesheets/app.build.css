@@ -19,6 +19,9 @@ html {
 .s-icon-menu {
   background-image: url("../../../images/icons/menu.png");
 }
+.s-icon-user {
+  background-image: url("../../../images/icons/user.png");
+}
 .s-icon-search {
   background-image: url("../../../images/icons/search.png");
 }
@@ -67,6 +70,12 @@ html {
   background-color: #fff;
   border-bottom: 1px solid #ecf0f1;
 }
+.s-header-right-buttons {
+  display: inline-block;
+  height: 50px;
+  font-size: 0;
+  float: right;
+}
 .s-header-button {
   display: inline-block;
   height: 50px;
@@ -100,6 +109,10 @@ html {
   .s-header-button-menu.active:hover .s-icon-menu {
     opacity: 0.4;
   }
+}
+.s-header-button-user {
+  width: 40px;
+  text-align: center;
 }
 html {
   width: 100%;
