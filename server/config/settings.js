@@ -2,7 +2,10 @@
 
 var
     SETTINGS = {
-        'port': 1337
+        port: 1337,
+        database: {
+            url: 'mongodb://tech:tech_3777489@ds045089.mongolab.com:45089/tech'
+        }
     },
 
     LOCAL_SETTINGS;

@@ -2,12 +2,14 @@
 
 var
     express = require('express'),
-    bookRouter = require('./controllers/book'),
+    authRouter = require('./router-controllers/auth'),
+    bookRouter = require('./router-controllers/book'),
 
     apiRouter = express.Router();
 
 apiRouter.stack =
     apiRouter.stack.concat(
+        authRouter.stack,
         bookRouter.stack
     );
 

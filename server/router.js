@@ -1,7 +1,7 @@
 'use strict';
 
 var
-    CLIENT_SETTINGS = require('./client-settings'),
+    CLIENT_SETTINGS = require('./config/client-settings'),
 
     express = require('express'),
 

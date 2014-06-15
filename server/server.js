@@ -1,23 +1,38 @@
 'use strict';
 
 var
-    CLIENT_SETTINGS = require('./client-settings'),
-    SETTINGS = require('./settings'),
+    CLIENT_SETTINGS = require('./config/client-settings'),
+    SETTINGS = require('./config/settings'),
 
     express = require('express'),
-    db = require('./db'),
+    mongoose = require('mongoose'),
+
     bodyParser = require('body-parser'),
+    cookieParser = require('cookie-parser'),
+    session = require('express-session'),
+    passport = require('./config/passport'),
+    flash = require('connect-flash'),
+    //passport = require('passport'),
+
     router = require('./router'),
     apiRouter = require('./api/router'),
 
     app = express();
 
+mongoose
+    .connect(SETTINGS.database.url);
+
 app
     /* Static */
     .use(express.static(CLIENT_SETTINGS.STATIC_FILES_PATH))
 
-    /* Available POST */
-    //.use(bodyParser())
+    /* Requests */
+    .use(bodyParser())
+    .use(cookieParser())
+    .use(session({ secret: 'techreuhrgejrvnsjeriuverviebriberijdbc42634' }))
+    .use(passport.initialize())
+    .use(passport.session())
+    .use(flash())
 
     /* API */
     .use('/api', apiRouter)
