@@ -10,12 +10,8 @@ var
     bodyParser = require('body-parser'),
     cookieParser = require('cookie-parser'),
     session = require('express-session'),
-    passport = require('./config/passport'),
     flash = require('connect-flash'),
-    //passport = require('passport'),
-
-    router = require('./router'),
-    apiRouter = require('./api/router'),
+    passport = require('passport'),
 
     app = express();
 
@@ -23,24 +19,29 @@ mongoose
     .connect(SETTINGS.database.url);
 
 app
-    /* Static */
-    .use(express.static(CLIENT_SETTINGS.STATIC_FILES_PATH))
+    .use(express.static(CLIENT_SETTINGS.STATIC_FILES_PATH));
 
-    /* Requests */
-    .use(bodyParser())
+app
     .use(cookieParser())
-    .use(session({ secret: 'techreuhrgejrvnsjeriuverviebriberijdbc42634' }))
+    .use(bodyParser())
+    .use(session({ secret: 'techreuhrgejrvnsjeriuverviebriberijdbc42634', cookie: {maxAge: 3000000000000000000000000000000000000000000} }))
     .use(passport.initialize())
     .use(passport.session())
-    .use(flash())
+    .use(flash());
 
-    /* API */
+passport = require('./config/passport')(passport);
+
+var
+    router = require('./router'),
+    authRouter = require('./auth/auth')(passport),
+    apiRouter = require('./api/router');
+
+app
+    .use('/api', authRouter)
     .use('/api', apiRouter)
+    .use('*', router);
 
-    /* Router */
-    .use('*', router)
-
-    /* Server */
+app
     .listen(SETTINGS.port, function () {
         console.log('Express server listening on port ' + SETTINGS.port);
     });
