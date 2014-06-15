@@ -18,8 +18,8 @@ authRouter
 
         })(req, res, next);
     })
-    .get('/auth/:user_id/', function (req, res) {
-        req.logout();
+    .get('/auth/', function (req, res) {
+        res.json({ state: req.isAuthenticated() });
     });
 
 module.exports = authRouter;

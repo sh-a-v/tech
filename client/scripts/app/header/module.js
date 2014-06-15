@@ -1,2 +1,1 @@
-var
-    header = angular.module('header', []);
+app.header = angular.module('app.header', []);

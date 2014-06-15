@@ -28,6 +28,8 @@ var
             'scripts/app/*.js',
             'scripts/app/*/module.js',
             'scripts/app/*/*.js',
+            'scripts/app/*/*/module.js',
+            'scripts/app/*/*/*.js',
             '!scripts/lib/*'
         ],
 

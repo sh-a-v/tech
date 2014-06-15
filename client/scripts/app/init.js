@@ -1,10 +1,10 @@
 'use strict';
 
 var
-    app = angular.module('app', ['ui.router', 'ngTouch', 'header', 'menu']);
+    app = angular.module('app', ['ui.router', 'ngResource', 'ngTouch', 'app.auth', 'app.header', 'app.menu', 'app.popupPage']);
 
 app
-    .config( function ($stateProvider, $locationProvider) {
+    .config( function ($stateProvider, $locationProvider, $resourceProvider) {
         $stateProvider
             .state('index', {
                 url: '/'
@@ -30,4 +30,7 @@ app
 
         $locationProvider
             .html5Mode(true);
+
+        $resourceProvider
+            .defaults.stripTrailingSlashes = false;
     });

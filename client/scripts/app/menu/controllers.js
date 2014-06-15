@@ -1,4 +1,4 @@
-menu
+app.menu
     .controller('MenuCtrl', ['$scope', '$state', function ($scope, $state) {
         $scope.menu = {
             el: null,

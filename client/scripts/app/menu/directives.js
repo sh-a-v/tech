@@ -1,4 +1,4 @@
-menu
+app.menu
     .directive('menuView', ['$window', function ($window) {
         return {
             restrict: 'A',
