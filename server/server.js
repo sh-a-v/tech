@@ -11,7 +11,10 @@ var
     cookieParser = require('cookie-parser'),
     session = require('express-session'),
     flash = require('connect-flash'),
-    passport = require('passport'),
+    passport = require('./config/passport'),
+
+    router = require('./router'),
+    apiRouter = require('./api/router'),
 
     app = express();
 
@@ -24,20 +27,12 @@ app
 app
     .use(cookieParser())
     .use(bodyParser())
-    .use(session({ secret: 'techreuhrgejrvnsjeriuverviebriberijdbc42634', cookie: {maxAge: 3000000000000000000000000000000000000000000} }))
+    .use(session({ secret: 'techreuhrgejrvnsjeriuverviebriberijdbc42634', cookie: {maxAge: 100000000000} }))
     .use(passport.initialize())
     .use(passport.session())
     .use(flash());
 
-passport = require('./config/passport')(passport);
-
-var
-    router = require('./router'),
-    authRouter = require('./auth/auth')(passport),
-    apiRouter = require('./api/router');
-
 app
-    .use('/api', authRouter)
     .use('/api', apiRouter)
     .use('*', router);
 
