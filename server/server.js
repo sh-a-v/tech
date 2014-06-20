@@ -11,9 +11,10 @@ var
     cookieParser = require('cookie-parser'),
     session = require('express-session'),
     flash = require('connect-flash'),
-    passport = require('./config/passport'),
+    passport = require('./auth/passport'),
 
     router = require('./router'),
+    authRouter = require('./auth/auth-router'),
     apiRouter = require('./api/router'),
 
     app = express();
@@ -33,6 +34,7 @@ app
     .use(flash());
 
 app
+    .use('/', authRouter)
     .use('/api', apiRouter)
     .use('*', router);
 

@@ -2,8 +2,8 @@
 
 var
     express = require('express'),
-    passport = require('../../config/passport'),
-    User = require('../../models/user'),
+    passport = require('./passport'),
+    User = require('../models/user'),
     authRouter = express.Router();
 
 authRouter
