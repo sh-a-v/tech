@@ -30,6 +30,13 @@ button::-moz-focus-inner {
   width: 28px;
   height: 28px;
 }
+.s-icon-huge {
+  width: 36px;
+  height: 36px;
+}
+.s-icon-logo {
+  background-image: url("../../../images/icons/logo.png");
+}
 .s-icon-menu {
   background-image: url("../../../images/icons/menu.png");
 }
@@ -95,6 +102,12 @@ button::-moz-focus-inner {
   height: 50px;
   font-size: 0;
   float: right;
+}
+.s-header-logo {
+  display: inline-block;
+  height: 50px;
+  line-height: 50px;
+  font-size: 0;
 }
 .s-header-button {
   display: inline-block;
