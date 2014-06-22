@@ -1,1 +1,0 @@
-app.header = angular.module('app.header', []);

@@ -1,5 +1,7 @@
-<form action="/auth/" method="post">
-    <input type="text" name="email">
-    <input type="password" name="password">
-    <input type="submit">
-</form>
+<div class="s-popup-auth">
+    <form ng-submit="user.auth.submit()">
+        <input type="email" name="email" placeholder="Email" ng-model="user.email">
+        <input type="password" name="password" placeholder="Password" ng-model="user.password">
+        <button>Отправить</button>
+    </form>
+</div>

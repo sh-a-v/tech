@@ -1,7 +1,7 @@
 .s-header
   display inline-block
   position relative
-  width max-app-width
+  width 100%
   height header-height
   box-sizing border-box
   background-color white
@@ -34,15 +34,9 @@
       opacity 0.5
 
     @media media-desktop
-      &:hover .s-icon-menu
-        opacity 0.8
-
       &.active .s-icon-menu
         opacity 0.2
 
-      &.active:hover .s-icon-menu
-        opacity 0.4
-
   &-user
-    width 40px
+    width 50px
     text-align center

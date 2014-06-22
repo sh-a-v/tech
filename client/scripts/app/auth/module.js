@@ -1,1 +1,0 @@
-app.auth = angular.module('app.auth', []);

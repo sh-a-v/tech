@@ -1,0 +1,48 @@
+.s-popup-auth
+  display inline-block
+  background-color white
+  border-radius 0 0 2px 2px
+
+  form
+    margin-top 20px
+
+  input, button
+    display inline-block
+    box-sizing border-box
+    border none
+
+  input
+    height 40px
+    margin-bottom 20px
+    border-bottom 1px solid grey
+    font-size 24px
+    color silver
+
+  button
+    height 44px
+    padding 0
+    background rgba(green-1, 0.8)
+    border-radius 1px
+    color white
+    font-size 18px
+    cursor pointer
+    transition all 0.3s
+
+    &:hover, &:active
+      background-color rgba(green-1, 0.9)
+
+  @media media-desktop
+    width 700px
+    min-height 220px
+
+    input, button
+      width 400px
+
+  @media media-tablet
+    width 500px
+    min-height 220px
+
+    input, button
+      width 300px
+    button
+      height 50px

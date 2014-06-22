@@ -12,7 +12,8 @@ var
         stylesheetsFolder: 'stylesheets/',
         stylusFiles: [
             'stylesheets/stylus/vars/*.styl',
-            'stylesheets/stylus/*.styl'
+            'stylesheets/stylus/*.styl',
+            'stylesheets/stylus/*/*.styl'
         ],
 
         /* Scripts */

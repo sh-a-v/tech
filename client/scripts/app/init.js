@@ -1,7 +1,7 @@
 'use strict';
 
 var
-    app = angular.module('app', ['ui.router', 'ngResource', 'ngTouch', 'app.auth', 'app.header', 'app.menu', 'app.popupPage']);
+    app = angular.module('app', ['ui.router', 'ngResource', 'ngTouch', 'app.user', 'app.menu', 'app.popupPage']);
 
 app
     .config( function ($stateProvider, $locationProvider, $resourceProvider) {

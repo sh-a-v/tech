@@ -20,4 +20,10 @@ app
                 this.el = el;
             }
         }
+    }])
+
+    .controller('HeaderCtrl', ['$scope', function ($scope) {
+        $scope.header = {
+
+        };
     }]);

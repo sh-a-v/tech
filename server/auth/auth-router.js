@@ -23,10 +23,10 @@ authRouter
         })(req, res, next);
     })*/
     .post('/auth/', passport.authenticate('local'), function (req, res) {
-        res.json({ state: req.isAuthenticated() });
+        res.json({ authentication: req.isAuthenticated() });
     })
     .get('/auth/', function (req, res) {
-        res.json({ state: req.isAuthenticated() });
+        res.json({ authentication: req.isAuthenticated() });
     });
 
 module.exports = authRouter;

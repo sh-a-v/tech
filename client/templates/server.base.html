@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/stylesheets/app.build.css">
 </head>
 <body>
-    <section class="s-app-container" resize>
+    <section class="s-app-container preload" resize preload>
         <header class="s-header" header-view></header>
         <main class="s-main desktop-menu-active" main-state>
             <nav class="s-menu" menu-view></nav>
@@ -16,9 +16,10 @@
             </section>
         </main>
         <section class="s-popup-page" popup-page-state>
-            <div class="s-popup-page-head"></div>
+            <div class="s-popup-page-head" popup-header-view></div>
             <div class="s-popup-page-body">
-                <section auth-view></section>
+                <section class="s-popup" auth-view></section>
+                <section class="s-popup" profile-view></section>
             </div>
         </section>
     </section>

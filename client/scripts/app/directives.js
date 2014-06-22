@@ -3,7 +3,7 @@ app
         return {
             restrict: 'A',
             controller: 'WindowSizeCtrl',
-            link: function (scope, elem, attrs) {
+            link: function (scope, el, attrs) {
                 var
                     windowSize = scope.windowSize;
 
@@ -13,6 +13,17 @@ app
                     .on('resize', windowSize.saveSize);
             }
         };
+    }])
+
+    .directive('preload', ['$window', function ($window) {
+        return {
+            restrict: 'A',
+            link: function (scope, el, attrs) {
+                scope.$watch('$viewContentLoaded', function () {
+                    el.removeClass('preload');
+                });
+            }
+        }
     }])
 
     .directive('mainState', function () {
@@ -45,5 +56,13 @@ app
                     });
                 }, 0);
             }
+        }
+    })
+
+    .directive('headerView', function () {
+        return {
+            restrict: 'A',
+            templateUrl: 'header.html',
+            controller: 'HeaderCtrl'
         }
     });
