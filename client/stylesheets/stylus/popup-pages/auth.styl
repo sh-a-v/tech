@@ -30,6 +30,13 @@
 
     &:hover, &:active
       background-color rgba(green-1, 0.9)
+    &::after
+      content '\A'
+      white-space pre
+
+  &-link
+    display block
+    font-size 12px
 
   @media media-desktop
     width 700px

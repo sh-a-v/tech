@@ -40,7 +40,7 @@ $templateCache.put("menu.html","<div class=\"s-menu-inner-wrapper\">\n    <ul cl
 $templateCache.put("content-pages/cabinet.html","<h1>Cabinet</h1>\n");
 $templateCache.put("content-pages/catalog.html","<h1>Catalog</h1>");
 $templateCache.put("content-pages/collections.html","<!DOCTYPE html>\n<html>\n<head lang=\"en\">\n    <meta charset=\"UTF-8\">\n    <title></title>\n</head>\n<body>\n\n</body>\n</html>");
-$templateCache.put("popup-pages/auth.html","<div class=\"s-popup-auth\">\n    <form ng-submit=\"user.auth.submit()\">\n        <input type=\"email\" name=\"email\" placeholder=\"Email\" ng-model=\"user.email\">\n        <input type=\"password\" name=\"password\" placeholder=\"Password\" ng-model=\"user.password\">\n        <button>Отправить</button>\n    </form>\n</div>\n");
+$templateCache.put("popup-pages/auth.html","<div class=\"s-popup-auth\">\n    <form ng-submit=\"user.auth.submit()\">\n        <input type=\"email\" name=\"email\" placeholder=\"Email\" ng-model=\"user.email\">\n        <input type=\"password\" name=\"password\" placeholder=\"Password\" ng-model=\"user.password\">\n        <button>Отправить</button>\n        <a class=\"s-popup-auth-link\">Соглашение</a>\n        <a class=\"s-popup-auth-link\">Восстановить пароль</a>\n    </form>\n</div>\n");
 $templateCache.put("popup-pages/header.html","<span ng-bind=\"popupPage.child.name\"></span>\n<div class=\"s-popup-page-head-button s-popup-page-head-button-close\" ng-click=\"popupPage.deactivateState()\"><i class=\"s-icon s-icon-big s-icon-close\"></i></div>");
 $templateCache.put("popup-pages/profile.html","<div class=\"s-popup-profile\"></div>");}]);
 app
@@ -159,90 +159,6 @@ app.user = angular.module('app.user', []);
  * Services
  */
 
-app.popupPage
-    .controller('PopupPageCtrl', ['$scope', function ($scope) {
-        $scope.popupPage = {
-            el: null,
-            activeState: false,
-            child: null,
-            initEl: function (el) {
-                this.el = el;
-            },
-            isActiveState: function () {
-                return this.activeState;
-            },
-            activateState: function () {
-                this.activeState = true;
-            },
-            deactivateState: function () {
-                this.activeState = false;
-                this.child.deactivateState();
-            },
-            toggleState: function () {
-                this.activeState ? this.deactivateState() : this.activateState();
-            },
-            getState: function () {
-                return $scope.popupPage.activeState ? 'visible' : 'hidden';
-            },
-            setChild: function (child) {
-                this.child = child;
-            }
-        };
-    }]);
-
-app.popupPage
-    .directive('popupPageState', function () {
-        return {
-            restrict: 'A',
-            controller: 'PopupPageCtrl',
-            link: function (scope, el, attrs) {
-                var
-                    popupPage = scope.popupPage;
-
-                popupPage.view = {
-                    animation: false,
-                    isAnimation: function () {
-                        return this.animation;
-                    },
-                    setAnimation: function () {
-                        this.animation = true;
-                        el.addClass('animation');
-                    },
-                    showPage: function () {
-                        if ( !this.isAnimation() ) {
-                            this.setAnimation();
-                        }
-                        popupPage.el.addClass('active');
-                    },
-                    hidePage: function () {
-                        popupPage.el.removeClass('active')
-                    },
-                    togglePage: function () {
-                        popupPage.activeState ? this.showPage() : this.hidePage();
-                    }
-                };
-
-                popupPage.initEl(el);
-
-                scope.$watch('$viewContentLoaded', function () {
-                    setTimeout(function () {
-                        //el.removeClass('hidden');
-                    }, 500);
-                });
-                scope.$watch(popupPage.getState, function (state) {
-                    popupPage.view.togglePage();
-                });
-            }
-        }
-    })
-
-    .directive('popupHeaderView', function () {
-        return {
-            restrict: 'A',
-            templateUrl: 'popup-pages/header.html'
-        }
-    });
-
 app.menu
     .controller('MenuCtrl', ['$scope', '$state', function ($scope, $state) {
         $scope.menu = {
@@ -341,6 +257,90 @@ app.menu
             controller: ''
         }
     });
+app.popupPage
+    .controller('PopupPageCtrl', ['$scope', function ($scope) {
+        $scope.popupPage = {
+            el: null,
+            activeState: false,
+            child: null,
+            initEl: function (el) {
+                this.el = el;
+            },
+            isActiveState: function () {
+                return this.activeState;
+            },
+            activateState: function () {
+                this.activeState = true;
+            },
+            deactivateState: function () {
+                this.activeState = false;
+                this.child.deactivateState();
+            },
+            toggleState: function () {
+                this.activeState ? this.deactivateState() : this.activateState();
+            },
+            getState: function () {
+                return $scope.popupPage.activeState ? 'visible' : 'hidden';
+            },
+            setChild: function (child) {
+                this.child = child;
+            }
+        };
+    }]);
+
+app.popupPage
+    .directive('popupPageState', function () {
+        return {
+            restrict: 'A',
+            controller: 'PopupPageCtrl',
+            link: function (scope, el, attrs) {
+                var
+                    popupPage = scope.popupPage;
+
+                popupPage.view = {
+                    animation: false,
+                    isAnimation: function () {
+                        return this.animation;
+                    },
+                    setAnimation: function () {
+                        this.animation = true;
+                        el.addClass('animation');
+                    },
+                    showPage: function () {
+                        if ( !this.isAnimation() ) {
+                            this.setAnimation();
+                        }
+                        popupPage.el.addClass('active');
+                    },
+                    hidePage: function () {
+                        popupPage.el.removeClass('active')
+                    },
+                    togglePage: function () {
+                        popupPage.activeState ? this.showPage() : this.hidePage();
+                    }
+                };
+
+                popupPage.initEl(el);
+
+                scope.$watch('$viewContentLoaded', function () {
+                    setTimeout(function () {
+                        //el.removeClass('hidden');
+                    }, 500);
+                });
+                scope.$watch(popupPage.getState, function (state) {
+                    popupPage.view.togglePage();
+                });
+            }
+        }
+    })
+
+    .directive('popupHeaderView', function () {
+        return {
+            restrict: 'A',
+            templateUrl: 'popup-pages/header.html'
+        }
+    });
+
 app.user
     .controller('UserCtrl', ['$scope', function ($scope) {
         $scope.user = {
