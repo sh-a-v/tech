@@ -40,7 +40,7 @@ $templateCache.put("menu.html","<div class=\"s-menu-inner-wrapper\">\n    <ul cl
 $templateCache.put("content-pages/cabinet.html","<h1>Cabinet</h1>\n");
 $templateCache.put("content-pages/catalog.html","<h1>Catalog</h1>");
 $templateCache.put("content-pages/collections.html","<!DOCTYPE html>\n<html>\n<head lang=\"en\">\n    <meta charset=\"UTF-8\">\n    <title></title>\n</head>\n<body>\n\n</body>\n</html>");
-$templateCache.put("popup-pages/auth.html","<div class=\"s-popup-auth\">\n    <form ng-submit=\"user.auth.submit()\">\n        <input type=\"email\" name=\"email\" placeholder=\"Email\" ng-model=\"user.email\">\n        <input type=\"password\" name=\"password\" placeholder=\"Password\" ng-model=\"user.password\">\n        <button>Отправить</button>\n        <a class=\"s-popup-auth-link\">Соглашение</a>\n        <a class=\"s-popup-auth-link\">Восстановить пароль</a>\n    </form>\n</div>\n");
+$templateCache.put("popup-pages/auth.html","<div class=\"s-popup-auth\">\n    <form ng-submit=\"user.auth.submit()\">\n        <div class=\"s-popup-auth-message\" ng-class=\"user.auth.message.type\" ng-bind=\"user.auth.message.value\"></div>\n        <input type=\"email\" name=\"email\" placeholder=\"Email\" required ng-model=\"user.email\">\n        <input type=\"password\" name=\"password\" placeholder=\"Password\" required ng-model=\"user.password\" ng-disabled=\"user.auth.isRecovery()\">\n        <button>Отправить</button>\n        <div class=\"s-popup-auth-links\">\n            <a class=\"s-popup-auth-links-item\" ng-click=\"user.auth.toggleRecovery()\">{{ user.auth.isRecovery() ? \'Авторизоваться\' : \'Восстановить пароль\' }}</a>\n            <a class=\"s-popup-auth-links-item\">Соглашение</a>\n        </div>\n    </form>\n</div>\n");
 $templateCache.put("popup-pages/header.html","<span ng-bind=\"popupPage.child.name\"></span>\n<div class=\"s-popup-page-head-button s-popup-page-head-button-close\" ng-click=\"popupPage.deactivateState()\"><i class=\"s-icon s-icon-big s-icon-close\"></i></div>");
 $templateCache.put("popup-pages/profile.html","<div class=\"s-popup-profile\"></div>");}]);
 app
@@ -141,9 +141,9 @@ app
         }
     });
 app.menu = angular.module('app.menu', ['ui.router']);
+app.user = angular.module('app.user', []);
 app.popupPage = angular.module('app.popupPage', []);
 
-app.user = angular.module('app.user', []);
 /**
  * Controllers
  */
@@ -359,10 +359,43 @@ app.user
             el: null,
             name: 'Авторизация',
             activeState: false,
+            recovery: false,
             parent: $scope.popupPage,
+
+            message: {
+                value: '',
+                type: 'default',
+                list: {
+                    default: { value: '', type: 'default' },
+                    successResponse: { value: 'Вы успешно авторизованы', type: 'success' },
+                    errorResponse: { value: 'Вы неверно ввели email/password', type: 'error' },
+                    recoveryRequest: { value: 'Вам будет выслан новый пароль', type: 'warning' },
+                    recoveryResponse: { value: 'Новый пароль выслан', type: 'success' }
+                },
+                setValue: function (m) {
+                    this._set(m);
+                },
+                clean: function () {
+                    this._set(this.list.default);
+                },
+                _set: function (m) {
+                    this.value = m.value;
+                    this.type = m.type;
+                }
+            },
+
             initEl: function (el) {
                 this.el = el;
             },
+
+            isRecovery: function () {
+                return this.recovery;
+            },
+            toggleRecovery: function () {
+                this.recovery = !this.recovery;
+                this.isRecovery() ? this.message.setValue( this.message.list.recoveryRequest ) : this.message.clean();
+            },
+
             activateState: function () {
                 this.activeState = true;
                 if ( !this.parent.isActiveState() ) this.parent.activateState();
@@ -370,6 +403,7 @@ app.user
             },
             deactivateState: function () {
                 this.activeState = false;
+                this.message.clean();
             },
             toggleState: function () {
                 this.activeState ? this.deactivateState() : this.activateState();
@@ -377,17 +411,32 @@ app.user
             getState: function () {
                 return $scope.user.auth.activeState ? 'visible' : 'hidden';
             },
+
             submit: function () {
+                this.isRecovery() ? this._recoveryRequest() : this._loginRequest();
+            },
+            _loginRequest: function () {
                 Auth.save({ email: $scope.user.email, password: $scope.user.password })
                     .$promise.then(function (res) {
                         $scope.user.authentication = res.authentication;
-                        $scope.user.auth.checkSubmitResponse(res);
+                        $scope.user.auth._loginResponse(res);
                     });
             },
-            checkSubmitResponse: function (res) {
-                if ( $scope.user.isAuthenticated() ) {
-                    this.parent.deactivateState();
-                }
+            _recoveryRequest: function () {
+                Auth.update({ email: $scope.user.email })
+                    .$promise.then(function (res) {
+                        $scope.user.auth._recoveryResponse(res);
+                    });
+            },
+            _loginResponse: function (res) {
+                this.message
+                    .setValue( $scope.user.isAuthenticated() ? this.message.list.successResponse : this.message.list.errorResponse );
+
+                if ( $scope.user.isAuthenticated() ) this.parent.deactivateState();
+            },
+            _recoveryResponse: function (res) {
+                this.message
+                    .setValue( this.message.list.recoveryResponse );
             }
         };
 
@@ -494,5 +543,5 @@ app.user
 
 app.user
     .factory('Auth', ['$resource', function ($resource) {
-        return $resource('/auth/', {});
+        return $resource('/auth/', null, {'update': { method: 'PUT' }});
     }]);

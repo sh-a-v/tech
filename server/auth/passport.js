@@ -18,7 +18,7 @@ passport
 
                 if (user) {
                     if (!user.validPassword(password))
-                        return done(null, false, req.flash('authMessage', 'Вы неверно ввели пароль'));
+                        return done(err);
 
                     return done(null, user, req.flash('authMessage', 'Вы успешно авторизованы'));
                 } else {

@@ -16,10 +16,43 @@ app.user
             el: null,
             name: 'Авторизация',
             activeState: false,
+            recovery: false,
             parent: $scope.popupPage,
+
+            message: {
+                value: '',
+                type: 'default',
+                list: {
+                    default: { value: '', type: 'default' },
+                    successResponse: { value: 'Вы успешно авторизованы', type: 'success' },
+                    errorResponse: { value: 'Вы неверно ввели email/password', type: 'error' },
+                    recoveryRequest: { value: 'Вам будет выслан новый пароль', type: 'warning' },
+                    recoveryResponse: { value: 'Новый пароль выслан', type: 'success' }
+                },
+                setValue: function (m) {
+                    this._set(m);
+                },
+                clean: function () {
+                    this._set(this.list.default);
+                },
+                _set: function (m) {
+                    this.value = m.value;
+                    this.type = m.type;
+                }
+            },
+
             initEl: function (el) {
                 this.el = el;
             },
+
+            isRecovery: function () {
+                return this.recovery;
+            },
+            toggleRecovery: function () {
+                this.recovery = !this.recovery;
+                this.isRecovery() ? this.message.setValue( this.message.list.recoveryRequest ) : this.message.clean();
+            },
+
             activateState: function () {
                 this.activeState = true;
                 if ( !this.parent.isActiveState() ) this.parent.activateState();
@@ -27,6 +60,7 @@ app.user
             },
             deactivateState: function () {
                 this.activeState = false;
+                this.message.clean();
             },
             toggleState: function () {
                 this.activeState ? this.deactivateState() : this.activateState();
@@ -34,17 +68,32 @@ app.user
             getState: function () {
                 return $scope.user.auth.activeState ? 'visible' : 'hidden';
             },
+
             submit: function () {
+                this.isRecovery() ? this._recoveryRequest() : this._loginRequest();
+            },
+            _loginRequest: function () {
                 Auth.save({ email: $scope.user.email, password: $scope.user.password })
                     .$promise.then(function (res) {
                         $scope.user.authentication = res.authentication;
-                        $scope.user.auth.checkSubmitResponse(res);
+                        $scope.user.auth._loginResponse(res);
                     });
             },
-            checkSubmitResponse: function (res) {
-                if ( $scope.user.isAuthenticated() ) {
-                    this.parent.deactivateState();
-                }
+            _recoveryRequest: function () {
+                Auth.update({ email: $scope.user.email })
+                    .$promise.then(function (res) {
+                        $scope.user.auth._recoveryResponse(res);
+                    });
+            },
+            _loginResponse: function (res) {
+                this.message
+                    .setValue( $scope.user.isAuthenticated() ? this.message.list.successResponse : this.message.list.errorResponse );
+
+                if ( $scope.user.isAuthenticated() ) this.parent.deactivateState();
+            },
+            _recoveryResponse: function (res) {
+                this.message
+                    .setValue( this.message.list.recoveryResponse );
             }
         };
 

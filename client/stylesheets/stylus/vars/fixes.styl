@@ -7,13 +7,29 @@ html
   -ms-user-select none
   user-select none
 
-*:focus {
-  outline: 0;
-}
+*:focus
+  outline 0
 
-input:-webkit-autofill
-  -webkit-box-shadow 0 0 0px 1000px white inset
-  -webkit-text-fill-color silver
+input
+  &:-webkit-autofill
+    -webkit-box-shadow 0 0 0px 1000px white inset
+    -webkit-text-fill-color silver
+
+  &::-webkit-input-placeholder
+    color silver
+    opacity 0.5 !important
+
+  &:-moz-placeholder, &::-moz-placeholder
+    color silver
+    box-shadow:none !important;
+
+  &:invalid
+    box-shadow none
+
+  &:disabled
+    background-color transparent
+    opacity 0.2
+    transition opacity 0.2s
 
 button::-moz-focus-inner
   border 0

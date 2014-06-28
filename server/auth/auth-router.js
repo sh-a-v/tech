@@ -7,11 +7,15 @@ var
     authRouter = express.Router();
 
 authRouter
-    .post('/auth/', passport.authenticate('local'), function (req, res) {
-        res.json({ authentication: req.isAuthenticated() });
+    .post('/auth/', function (req, res, next) {
+        passport.authenticate('local', function (err, user) {
+            if (user)
+                req.logIn(user, function (err) {});
+
+            res.json({ state: req.isAuthenticated() });
+        })(req, res, next);
     })
     .put('/auth/', function (req, res) {
-        console.log('!!!!!!!!! put');
         res.json({});
     })
     .get('/auth/', function (req, res) {
