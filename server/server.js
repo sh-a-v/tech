@@ -8,7 +8,6 @@ var
     mongoose = require('mongoose'),
 
     bodyParser = require('body-parser'),
-    cookieParser = require('cookie-parser'),
     session = require('express-session'),
     flash = require('connect-flash'),
     passport = require('./auth/passport'),
@@ -26,7 +25,6 @@ app
     .use(express.static(CLIENT_SETTINGS.STATIC_FILES_PATH));
 
 app
-    .use(cookieParser())
     .use(bodyParser())
     .use(session({ secret: 'techreuhrgejrvnsjeriuverviebriberijdbc42634', cookie: {maxAge: 100000000000} }))
     .use(passport.initialize())

@@ -6,14 +6,13 @@
         "start": "node/supervisor server.js"
     },
     "dependencies": {
-        "express": "~4.4.1",
+        "express": "~4.4.5",
         "path": "",
         "mongoose": "~3.8.12",
         "body-parser": "latest",
-        "cookie-parser": "",
-        "express-session": "1.5.0",
-        "passport": "",
-        "passport-local": "",
+        "express-session": "1.5.2",
+        "passport": "latest",
+        "passport-local": "latest",
         "passport-facebook": "~1.0.3",
         "passport-twitter": "~1.0.2",
         "passport-google-oauth": "~0.1.5",
