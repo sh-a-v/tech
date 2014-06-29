@@ -13,7 +13,7 @@ authRouter
             if (user)
                 req.logIn(user, function (err) {});
 
-            res.json({ success: req.isAuthenticated(), authentication: req.isAuthenticated() });
+            res.json({ success: !!err, authentication: req.isAuthenticated() });
         })(req, res, next);
     })
     .put('/auth/', function (req, res, next) {
@@ -24,7 +24,7 @@ authRouter
         })(req, res, next);
     })
     .get('/auth/', function (req, res) {
-        res.json({ success: req.isAuthenticated(), authentication: req.isAuthenticated() });
+        res.json({ success: true, authentication: req.isAuthenticated() });
     });
 
 module.exports = authRouter;
