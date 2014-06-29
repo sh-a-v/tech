@@ -54,7 +54,7 @@ passport
 
                 if (user) {
                     var
-                        newPassword = generatePassword(12, true);
+                        newPassword = generatePassword(12, false);
 
                     user.local.password = user.generateHash(newPassword);
 
@@ -63,7 +63,7 @@ passport
                             if (err)
                                 return done(err);
 
-                            return done(err, user);
+                            return done(err, user, newPassword);
                         });
                 } else {
                     return done(err);

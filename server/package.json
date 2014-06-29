@@ -18,6 +18,7 @@
         "passport-google-oauth": "~0.1.5",
         "bcrypt-nodejs": "latest",
         "connect-flash": "~0.1.1",
-        "password-generator": "latest"
+        "password-generator": "latest",
+        "nodemailer": "latest"
     }
 }
