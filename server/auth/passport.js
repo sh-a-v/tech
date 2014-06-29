@@ -3,6 +3,7 @@
 var
     passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
+    generatePassword = require('password-generator'),
     User = require('../models/user');
 
 passport
@@ -20,7 +21,7 @@ passport
                     if (!user.validPassword(password))
                         return done(err);
 
-                    return done(null, user, req.flash('authMessage', 'Вы успешно авторизованы'));
+                    return done(null, user);
                 } else {
                     var
                         newUser = new User();
@@ -33,12 +34,43 @@ passport
                             if (err)
                                 return done(err);
 
-                            return done(err, newUser, req.flash('authMessage', 'Вы успешно зарегистрированы'));
+                            return done(err, newUser);
                         });
                 }
             });
         })
-);
+    );
+
+passport
+    .use('local-recovery', new LocalStrategy({
+            usernameField: 'email',
+            passwordField: 'recovery',
+            passReqToCallback : true
+        },
+        function (req, email, password, done) {
+            User.findOne({ 'local.email': email }, function (err, user) {
+                if (err)
+                    return done(err);
+
+                if (user) {
+                    var
+                        newPassword = generatePassword(12, true);
+
+                    user.local.password = user.generateHash(newPassword);
+
+                    user
+                        .save(function (err) {
+                            if (err)
+                                return done(err);
+
+                            return done(err, user);
+                        });
+                } else {
+                    return done(err);
+                }
+            });
+        })
+    );
 
 passport
     .serializeUser(function (user, done) {

@@ -25,9 +25,10 @@ app.user
                 list: {
                     default: { value: '', type: 'default' },
                     successResponse: { value: 'Вы успешно авторизованы', type: 'success' },
-                    errorResponse: { value: 'Вы неверно ввели email/password', type: 'error' },
+                    errorResponse: { value: 'Вы неверно ввели пароль', type: 'error' },
                     recoveryRequest: { value: 'Вам будет выслан новый пароль', type: 'warning' },
-                    recoveryResponse: { value: 'Новый пароль выслан', type: 'success' }
+                    successRecoveryResponse: { value: 'Новый пароль выслан', type: 'success' },
+                    errorRecoveryResponse: { value: 'Пользователь не найден', type: 'error' }
                 },
                 setValue: function (m) {
                     this._set(m);
@@ -60,7 +61,6 @@ app.user
             },
             deactivateState: function () {
                 this.activeState = false;
-                this.message.clean();
             },
             toggleState: function () {
                 this.activeState ? this.deactivateState() : this.activateState();
@@ -73,14 +73,20 @@ app.user
                 this.isRecovery() ? this._recoveryRequest() : this._loginRequest();
             },
             _loginRequest: function () {
-                Auth.save({ email: $scope.user.email, password: $scope.user.password })
+                Auth.save({
+                        email: $scope.user.email,
+                        password: $scope.user.password
+                    })
                     .$promise.then(function (res) {
                         $scope.user.authentication = res.authentication;
                         $scope.user.auth._loginResponse(res);
                     });
             },
             _recoveryRequest: function () {
-                Auth.update({ email: $scope.user.email })
+                Auth.update({
+                        email: $scope.user.email,
+                        recovery: true
+                    })
                     .$promise.then(function (res) {
                         $scope.user.auth._recoveryResponse(res);
                     });
@@ -93,7 +99,7 @@ app.user
             },
             _recoveryResponse: function (res) {
                 this.message
-                    .setValue( this.message.list.recoveryResponse );
+                    .setValue( res.success ? this.message.list.successRecoveryResponse : this.message.list.errorRecoveryResponse );
             }
         };
 

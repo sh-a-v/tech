@@ -15,8 +15,10 @@ authRouter
             res.json({ state: req.isAuthenticated() });
         })(req, res, next);
     })
-    .put('/auth/', function (req, res) {
-        res.json({});
+    .put('/auth/', function (req, res, next) {
+        passport.authenticate('local-recovery', function (err, user) {
+            user ? res.json({ success: true }) : res.json({ success: false });
+        })(req, res, next);
     })
     .get('/auth/', function (req, res) {
         res.json({ authentication: req.isAuthenticated() });
