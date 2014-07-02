@@ -1,7 +1,7 @@
 'use strict';
 var
     nodemailer = require('nodemailer'),
-    smtpTransport = require('../mail/smtp-transport');
+    smtpTransport = require('./smtp-transport');
 
 module.exports = function (email, password) {
     var
@@ -14,10 +14,12 @@ module.exports = function (email, password) {
 
     smtpTransport
         .sendMail(mailOptions, function (err, res) {
-            if (err) {
-                return { success: false, err: err };
-            } else {
-                return { success: true, res: res };
+            console.log(err);
+            console.log(res);
+            return {
+                success: !!err,
+                res: res,
+                err: err
             }
-        })
+        });
 };

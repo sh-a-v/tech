@@ -23,7 +23,7 @@ app.user
                 value: '',
                 type: 'default',
                 list: {
-                    default: { value: '', type: 'default' },
+                    defaultMessage: { value: '', type: 'default' },
                     successResponse: { value: 'Вы успешно авторизованы', type: 'success' },
                     errorResponse: { value: 'Вы неверно ввели пароль', type: 'error' },
                     recoveryRequest: { value: 'Вам будет выслан новый пароль', type: 'warning' },
@@ -34,7 +34,7 @@ app.user
                     this._set(m);
                 },
                 clean: function () {
-                    this._set(this.list.default);
+                    this._set(this.list.defaultMessage);
                 },
                 _set: function (m) {
                     this.value = m.value;
@@ -51,12 +51,13 @@ app.user
             },
             toggleRecovery: function () {
                 this.recovery = !this.recovery;
-                this.isRecovery() ? this.message.setValue( this.message.list.recoveryRequest ) : this.message.clean();
+                this.isRecovery() ? this.message.setValue(this.message.list.recoveryRequest) : this.message.clean();
             },
 
             activateState: function () {
                 this.activeState = true;
-                if ( !this.parent.isActiveState() ) this.parent.activateState();
+                if ( !this.parent.isActiveState() )
+                    this.parent.activateState();
                 this.parent.setChild(this);
             },
             deactivateState: function () {
@@ -93,13 +94,14 @@ app.user
             },
             _loginResponse: function (res) {
                 this.message
-                    .setValue( $scope.user.isAuthenticated() ? this.message.list.successResponse : this.message.list.errorResponse );
+                    .setValue($scope.user.isAuthenticated() ? this.message.list.successResponse : this.message.list.errorResponse);
 
-                if ( $scope.user.isAuthenticated() ) this.parent.deactivateState();
+                if ( $scope.user.isAuthenticated() )
+                    this.parent.deactivateState();
             },
             _recoveryResponse: function (res) {
                 this.message
-                    .setValue( res.success ? this.message.list.successRecoveryResponse : this.message.list.errorRecoveryResponse );
+                    .setValue(res.success ? this.message.list.successRecoveryResponse : this.message.list.errorRecoveryResponse);
             }
         };
 
@@ -115,20 +117,26 @@ app.user
             name: 'Профиль',
             activeState: false,
             parent: $scope.popupPage,
+
             initEl: function (el) {
                 this.el = el;
             },
+
             activateState: function () {
                 this.activeState = true;
-                if ( !this.parent.isActiveState() ) this.parent.activateState();
+                if ( !this.parent.isActiveState() )
+                    this.parent.activateState();
                 this.parent.setChild(this);
             },
+
             deactivateState: function () {
                 this.activeState = false;
             },
+
             toggleState: function () {
                 this.activeState ? this.deactivateState() : this.activateState();
             },
+
             getState: function () {
                 return $scope.user.profile.activeState ? 'visible' : 'hidden';
             }

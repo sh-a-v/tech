@@ -14,11 +14,11 @@ passport
         },
         function (req, email, password, done) {
             User.findOne({ 'local.email': email }, function (err, user) {
-                if (err)
+                if ( err )
                     return done(err);
 
-                if (user) {
-                    if (!user.validPassword(password))
+                if ( user ) {
+                    if ( !user.validPassword(password) )
                         return done(err);
 
                     return done(null, user);
@@ -29,19 +29,17 @@ passport
                     newUser.local.email = email;
                     newUser.local.password = newUser.generateHash(password);
 
-                    newUser
-                        .save(function (err) {
-                            if (err)
-                                return done(err);
+                    newUser.save(function (err) {
+                        if ( err )
+                            return done(err);
 
-                            return done(err, newUser);
-                        });
+                        return done(err, newUser);
+                    });
                 }
             });
         })
-    );
+    )
 
-passport
     .use('local-recovery', new LocalStrategy({
             usernameField: 'email',
             passwordField: 'recovery',
@@ -49,22 +47,21 @@ passport
         },
         function (req, email, password, done) {
             User.findOne({ 'local.email': email }, function (err, user) {
-                if (err)
+                if ( err )
                     return done(err);
 
-                if (user) {
+                if ( user ) {
                     var
                         newPassword = generatePassword(12, false);
 
                     user.local.password = user.generateHash(newPassword);
 
-                    user
-                        .save(function (err) {
-                            if (err)
-                                return done(err);
+                    user.save(function (err) {
+                        if ( err )
+                            return done(err);
 
-                            return done(err, user, newPassword);
-                        });
+                        return done(err, user, newPassword);
+                    });
                 } else {
                     return done(err);
                 }
