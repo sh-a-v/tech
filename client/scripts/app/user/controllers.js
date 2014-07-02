@@ -28,7 +28,7 @@ app.user
                     errorResponse: { value: 'Вы неверно ввели пароль', type: 'error' },
                     recoveryRequest: { value: 'Вам будет выслан новый пароль', type: 'warning' },
                     successRecoveryResponse: { value: 'Новый пароль выслан', type: 'success' },
-                    errorRecoveryResponse: { value: 'Пользователь не найден', type: 'error' }
+                    errorRecoveryResponse: { value: 'Email адрес не верен или не найден', type: 'error' }
                 },
                 setValue: function (m) {
                     this._set(m);

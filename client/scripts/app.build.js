@@ -159,6 +159,90 @@ app.user = angular.module('app.user', []);
  * Services
  */
 
+app.popupPage
+    .controller('PopupPageCtrl', ['$scope', function ($scope) {
+        $scope.popupPage = {
+            el: null,
+            activeState: false,
+            child: null,
+            initEl: function (el) {
+                this.el = el;
+            },
+            isActiveState: function () {
+                return this.activeState;
+            },
+            activateState: function () {
+                this.activeState = true;
+            },
+            deactivateState: function () {
+                this.activeState = false;
+                this.child.deactivateState();
+            },
+            toggleState: function () {
+                this.activeState ? this.deactivateState() : this.activateState();
+            },
+            getState: function () {
+                return $scope.popupPage.activeState ? 'visible' : 'hidden';
+            },
+            setChild: function (child) {
+                this.child = child;
+            }
+        };
+    }]);
+
+app.popupPage
+    .directive('popupPageState', function () {
+        return {
+            restrict: 'A',
+            controller: 'PopupPageCtrl',
+            link: function (scope, el, attrs) {
+                var
+                    popupPage = scope.popupPage;
+
+                popupPage.view = {
+                    animation: false,
+                    isAnimation: function () {
+                        return this.animation;
+                    },
+                    setAnimation: function () {
+                        this.animation = true;
+                        el.addClass('animation');
+                    },
+                    showPage: function () {
+                        if ( !this.isAnimation() ) {
+                            this.setAnimation();
+                        }
+                        popupPage.el.addClass('active');
+                    },
+                    hidePage: function () {
+                        popupPage.el.removeClass('active')
+                    },
+                    togglePage: function () {
+                        popupPage.activeState ? this.showPage() : this.hidePage();
+                    }
+                };
+
+                popupPage.initEl(el);
+
+                scope.$watch('$viewContentLoaded', function () {
+                    setTimeout(function () {
+                        //el.removeClass('hidden');
+                    }, 500);
+                });
+                scope.$watch(popupPage.getState, function (state) {
+                    popupPage.view.togglePage();
+                });
+            }
+        }
+    })
+
+    .directive('popupHeaderView', function () {
+        return {
+            restrict: 'A',
+            templateUrl: 'popup-pages/header.html'
+        }
+    });
+
 app.menu
     .controller('MenuCtrl', ['$scope', '$state', function ($scope, $state) {
         $scope.menu = {
@@ -257,90 +341,6 @@ app.menu
             controller: ''
         }
     });
-app.popupPage
-    .controller('PopupPageCtrl', ['$scope', function ($scope) {
-        $scope.popupPage = {
-            el: null,
-            activeState: false,
-            child: null,
-            initEl: function (el) {
-                this.el = el;
-            },
-            isActiveState: function () {
-                return this.activeState;
-            },
-            activateState: function () {
-                this.activeState = true;
-            },
-            deactivateState: function () {
-                this.activeState = false;
-                this.child.deactivateState();
-            },
-            toggleState: function () {
-                this.activeState ? this.deactivateState() : this.activateState();
-            },
-            getState: function () {
-                return $scope.popupPage.activeState ? 'visible' : 'hidden';
-            },
-            setChild: function (child) {
-                this.child = child;
-            }
-        };
-    }]);
-
-app.popupPage
-    .directive('popupPageState', function () {
-        return {
-            restrict: 'A',
-            controller: 'PopupPageCtrl',
-            link: function (scope, el, attrs) {
-                var
-                    popupPage = scope.popupPage;
-
-                popupPage.view = {
-                    animation: false,
-                    isAnimation: function () {
-                        return this.animation;
-                    },
-                    setAnimation: function () {
-                        this.animation = true;
-                        el.addClass('animation');
-                    },
-                    showPage: function () {
-                        if ( !this.isAnimation() ) {
-                            this.setAnimation();
-                        }
-                        popupPage.el.addClass('active');
-                    },
-                    hidePage: function () {
-                        popupPage.el.removeClass('active')
-                    },
-                    togglePage: function () {
-                        popupPage.activeState ? this.showPage() : this.hidePage();
-                    }
-                };
-
-                popupPage.initEl(el);
-
-                scope.$watch('$viewContentLoaded', function () {
-                    setTimeout(function () {
-                        //el.removeClass('hidden');
-                    }, 500);
-                });
-                scope.$watch(popupPage.getState, function (state) {
-                    popupPage.view.togglePage();
-                });
-            }
-        }
-    })
-
-    .directive('popupHeaderView', function () {
-        return {
-            restrict: 'A',
-            templateUrl: 'popup-pages/header.html'
-        }
-    });
-
 app.user
     .controller('UserCtrl', ['$scope', function ($scope) {
         $scope.user = {
@@ -371,7 +371,7 @@ app.user
                     errorResponse: { value: 'Вы неверно ввели пароль', type: 'error' },
                     recoveryRequest: { value: 'Вам будет выслан новый пароль', type: 'warning' },
                     successRecoveryResponse: { value: 'Новый пароль выслан', type: 'success' },
-                    errorRecoveryResponse: { value: 'Пользователь не найден', type: 'error' }
+                    errorRecoveryResponse: { value: 'Email адрес не верен или не найден', type: 'error' }
                 },
                 setValue: function (m) {
                     this._set(m);
