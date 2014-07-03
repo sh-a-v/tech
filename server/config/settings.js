@@ -2,9 +2,10 @@
 
 var
     SETTINGS = {
+        secret: 'your_secret',
         port: 1337,
         database: {
-            url: 'mongodb://tech:tech_3777489@ds045089.mongolab.com:45089/tech'
+            url: 'your_url'
         }
     },
 

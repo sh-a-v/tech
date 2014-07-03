@@ -4,7 +4,7 @@ var
     express = require('express'),
     passport = require('./passport'),
     User = require('../models/user'),
-    recoveryPasswordMail = require('./recovery-password-mail'),
+    recoveryPasswordMail = require('../mail/mail-recovery-password'),
     authRouter = express.Router();
 
 authRouter
@@ -13,18 +13,33 @@ authRouter
             if (user)
                 req.logIn(user, function (err) {});
 
-            res.json({ success: !!err, authentication: req.isAuthenticated() });
+            res.json({
+                success: !!err,
+                authentication: req.isAuthenticated()
+            });
         })(req, res, next);
     })
+
     .put('/auth/', function (req, res, next) {
         passport.authenticate('local-recovery', function (err, user, newPassword) {
-            recoveryPasswordMail(user.local.email, newPassword);
+            var
+                mail;
 
-            res.json({ success: !!user });
+            if ( !err && user )
+                mail = recoveryPasswordMail(user.local.email, newPassword);
+
+            res.json({
+                success: !err && !!mail && mail.success,
+                userExist: !!user
+            });
         })(req, res, next);
     })
+
     .get('/auth/', function (req, res) {
-        res.json({ success: true, authentication: req.isAuthenticated() });
+        res.json({
+            success: true,
+            authentication: req.isAuthenticated()
+        });
     });
 
 module.exports = authRouter;

@@ -11,6 +11,7 @@ var
     session = require('express-session'),
     flash = require('connect-flash'),
     passport = require('./auth/passport'),
+    MongoStore = require('connect-mongo')(session),
 
     router = require('./router'),
     authRouter = require('./auth/auth-router'),
@@ -26,7 +27,11 @@ app
 
 app
     .use(bodyParser())
-    .use(session({ secret: 'techreuhrgejrvnsjeriuverviebriberijdbc42634', cookie: {maxAge: 100000000000} }))
+    .use(session({
+            secret: 'techreuhrgejrvnsjeriuverviebriberijdbc42634',
+            cookie: { maxAge: 100000000000 },
+            store: new MongoStore({ url: SETTINGS.database.url })
+        }))
     .use(passport.initialize())
     .use(passport.session())
     .use(flash());

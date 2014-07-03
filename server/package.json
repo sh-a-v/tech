@@ -19,6 +19,7 @@
         "bcrypt-nodejs": "latest",
         "connect-flash": "~0.1.1",
         "password-generator": "latest",
-        "nodemailer": "latest"
+        "nodemailer": "latest",
+        "connect-mongo": "latest"
     }
 }

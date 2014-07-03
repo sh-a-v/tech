@@ -141,9 +141,9 @@ app
         }
     });
 app.menu = angular.module('app.menu', ['ui.router']);
-app.user = angular.module('app.user', []);
 app.popupPage = angular.module('app.popupPage', []);
 
+app.user = angular.module('app.user', []);
 /**
  * Controllers
  */
@@ -158,6 +158,90 @@ app.popupPage = angular.module('app.popupPage', []);
 /**
  * Services
  */
+
+app.popupPage
+    .controller('PopupPageCtrl', ['$scope', function ($scope) {
+        $scope.popupPage = {
+            el: null,
+            activeState: false,
+            child: null,
+            initEl: function (el) {
+                this.el = el;
+            },
+            isActiveState: function () {
+                return this.activeState;
+            },
+            activateState: function () {
+                this.activeState = true;
+            },
+            deactivateState: function () {
+                this.activeState = false;
+                this.child.deactivateState();
+            },
+            toggleState: function () {
+                this.activeState ? this.deactivateState() : this.activateState();
+            },
+            getState: function () {
+                return $scope.popupPage.activeState ? 'visible' : 'hidden';
+            },
+            setChild: function (child) {
+                this.child = child;
+            }
+        };
+    }]);
+
+app.popupPage
+    .directive('popupPageState', function () {
+        return {
+            restrict: 'A',
+            controller: 'PopupPageCtrl',
+            link: function (scope, el, attrs) {
+                var
+                    popupPage = scope.popupPage;
+
+                popupPage.view = {
+                    animation: false,
+                    isAnimation: function () {
+                        return this.animation;
+                    },
+                    setAnimation: function () {
+                        this.animation = true;
+                        el.addClass('animation');
+                    },
+                    showPage: function () {
+                        if ( !this.isAnimation() ) {
+                            this.setAnimation();
+                        }
+                        popupPage.el.addClass('active');
+                    },
+                    hidePage: function () {
+                        popupPage.el.removeClass('active')
+                    },
+                    togglePage: function () {
+                        popupPage.activeState ? this.showPage() : this.hidePage();
+                    }
+                };
+
+                popupPage.initEl(el);
+
+                scope.$watch('$viewContentLoaded', function () {
+                    setTimeout(function () {
+                        //el.removeClass('hidden');
+                    }, 500);
+                });
+                scope.$watch(popupPage.getState, function (state) {
+                    popupPage.view.togglePage();
+                });
+            }
+        }
+    })
+
+    .directive('popupHeaderView', function () {
+        return {
+            restrict: 'A',
+            templateUrl: 'popup-pages/header.html'
+        }
+    });
 
 app.menu
     .controller('MenuCtrl', ['$scope', '$state', function ($scope, $state) {
@@ -257,90 +341,6 @@ app.menu
             controller: ''
         }
     });
-app.popupPage
-    .controller('PopupPageCtrl', ['$scope', function ($scope) {
-        $scope.popupPage = {
-            el: null,
-            activeState: false,
-            child: null,
-            initEl: function (el) {
-                this.el = el;
-            },
-            isActiveState: function () {
-                return this.activeState;
-            },
-            activateState: function () {
-                this.activeState = true;
-            },
-            deactivateState: function () {
-                this.activeState = false;
-                this.child.deactivateState();
-            },
-            toggleState: function () {
-                this.activeState ? this.deactivateState() : this.activateState();
-            },
-            getState: function () {
-                return $scope.popupPage.activeState ? 'visible' : 'hidden';
-            },
-            setChild: function (child) {
-                this.child = child;
-            }
-        };
-    }]);
-
-app.popupPage
-    .directive('popupPageState', function () {
-        return {
-            restrict: 'A',
-            controller: 'PopupPageCtrl',
-            link: function (scope, el, attrs) {
-                var
-                    popupPage = scope.popupPage;
-
-                popupPage.view = {
-                    animation: false,
-                    isAnimation: function () {
-                        return this.animation;
-                    },
-                    setAnimation: function () {
-                        this.animation = true;
-                        el.addClass('animation');
-                    },
-                    showPage: function () {
-                        if ( !this.isAnimation() ) {
-                            this.setAnimation();
-                        }
-                        popupPage.el.addClass('active');
-                    },
-                    hidePage: function () {
-                        popupPage.el.removeClass('active')
-                    },
-                    togglePage: function () {
-                        popupPage.activeState ? this.showPage() : this.hidePage();
-                    }
-                };
-
-                popupPage.initEl(el);
-
-                scope.$watch('$viewContentLoaded', function () {
-                    setTimeout(function () {
-                        //el.removeClass('hidden');
-                    }, 500);
-                });
-                scope.$watch(popupPage.getState, function (state) {
-                    popupPage.view.togglePage();
-                });
-            }
-        }
-    })
-
-    .directive('popupHeaderView', function () {
-        return {
-            restrict: 'A',
-            templateUrl: 'popup-pages/header.html'
-        }
-    });
-
 app.user
     .controller('UserCtrl', ['$scope', function ($scope) {
         $scope.user = {
@@ -366,18 +366,18 @@ app.user
                 value: '',
                 type: 'default',
                 list: {
-                    default: { value: '', type: 'default' },
+                    defaultMessage: { value: '', type: 'default' },
                     successResponse: { value: 'Вы успешно авторизованы', type: 'success' },
                     errorResponse: { value: 'Вы неверно ввели пароль', type: 'error' },
                     recoveryRequest: { value: 'Вам будет выслан новый пароль', type: 'warning' },
                     successRecoveryResponse: { value: 'Новый пароль выслан', type: 'success' },
-                    errorRecoveryResponse: { value: 'Пользователь не найден', type: 'error' }
+                    errorRecoveryResponse: { value: 'Email адрес не верен или не найден', type: 'error' }
                 },
                 setValue: function (m) {
                     this._set(m);
                 },
                 clean: function () {
-                    this._set(this.list.default);
+                    this._set(this.list.defaultMessage);
                 },
                 _set: function (m) {
                     this.value = m.value;
@@ -394,12 +394,13 @@ app.user
             },
             toggleRecovery: function () {
                 this.recovery = !this.recovery;
-                this.isRecovery() ? this.message.setValue( this.message.list.recoveryRequest ) : this.message.clean();
+                this.isRecovery() ? this.message.setValue(this.message.list.recoveryRequest) : this.message.clean();
             },
 
             activateState: function () {
                 this.activeState = true;
-                if ( !this.parent.isActiveState() ) this.parent.activateState();
+                if ( !this.parent.isActiveState() )
+                    this.parent.activateState();
                 this.parent.setChild(this);
             },
             deactivateState: function () {
@@ -436,13 +437,14 @@ app.user
             },
             _loginResponse: function (res) {
                 this.message
-                    .setValue( $scope.user.isAuthenticated() ? this.message.list.successResponse : this.message.list.errorResponse );
+                    .setValue($scope.user.isAuthenticated() ? this.message.list.successResponse : this.message.list.errorResponse);
 
-                if ( $scope.user.isAuthenticated() ) this.parent.deactivateState();
+                if ( $scope.user.isAuthenticated() )
+                    this.parent.deactivateState();
             },
             _recoveryResponse: function (res) {
                 this.message
-                    .setValue( res.success ? this.message.list.successRecoveryResponse : this.message.list.errorRecoveryResponse );
+                    .setValue(res.success ? this.message.list.successRecoveryResponse : this.message.list.errorRecoveryResponse);
             }
         };
 
@@ -458,20 +460,26 @@ app.user
             name: 'Профиль',
             activeState: false,
             parent: $scope.popupPage,
+
             initEl: function (el) {
                 this.el = el;
             },
+
             activateState: function () {
                 this.activeState = true;
-                if ( !this.parent.isActiveState() ) this.parent.activateState();
+                if ( !this.parent.isActiveState() )
+                    this.parent.activateState();
                 this.parent.setChild(this);
             },
+
             deactivateState: function () {
                 this.activeState = false;
             },
+
             toggleState: function () {
                 this.activeState ? this.deactivateState() : this.activateState();
             },
+
             getState: function () {
                 return $scope.user.profile.activeState ? 'visible' : 'hidden';
             }
