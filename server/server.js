@@ -11,6 +11,7 @@ var
     session = require('express-session'),
     flash = require('connect-flash'),
     passport = require('./auth/passport'),
+    compression = require('compression'),
     MongoStore = require('connect-mongo')(session),
 
     router = require('./router'),
@@ -26,10 +27,11 @@ app
     .use(express.static(CLIENT_SETTINGS.STATIC_FILES_PATH));
 
 app
+    .use(compression())
     .use(bodyParser())
     .use(session({
-            secret: 'techreuhrgejrvnsjeriuverviebriberijdbc42634',
-            cookie: { maxAge: 100000000000 },
+            secret: SETTINGS.secret,
+            cookie: { maxAge: 31536000000 },
             store: new MongoStore({ url: SETTINGS.database.url })
         }))
     .use(passport.initialize())
