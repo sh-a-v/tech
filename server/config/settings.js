@@ -16,6 +16,5 @@ try
     { LOCAL_SETTINGS = require('./local-settings'); }
 catch (err)
     { LOCAL_SETTINGS = null; }
-fsbg
 
 module.exports = LOCAL_SETTINGS || SETTINGS;
