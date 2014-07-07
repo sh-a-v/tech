@@ -6,6 +6,7 @@ var
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
     templateCache = require('gulp-angular-templatecache'),
+    cssBase64 = require('gulp-css-base64'),
 
     paths = {
         /* Stylesheets */
@@ -49,6 +50,7 @@ gulp
         gulp.src(paths.stylusFiles)
             .pipe(concat('app.build.styl'))
             .pipe(stylus({pretty: true}))
+            .pipe(cssBase64())
             .pipe(gulp.dest(paths.stylesheetsFolder));
     })
 
