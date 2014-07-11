@@ -79,7 +79,7 @@ gulp
         gulp.src(paths.scriptsAppFiles)
             .pipe(concat('app.build.js'))
             .pipe(gulp.dest(paths.scriptsFolder))
-            .pipe(uglify())
+            .pipe(uglify({mangle: false}))
             .pipe(rename({suffix: '.min'}))
             .pipe(gulp.dest(paths.scriptsFolder));
     });
