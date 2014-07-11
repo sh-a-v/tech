@@ -5,9 +5,12 @@ var
     stylus = require('gulp-stylus'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
+    minifyCSS = require('gulp-minify-css'),
     templateCache = require('gulp-angular-templatecache'),
     cssBase64 = require('gulp-css-base64'),
+    rename = require('gulp-rename');
 
+var
     paths = {
         /* Stylesheets */
         stylesheetsFolder: 'stylesheets/',
@@ -26,7 +29,7 @@ var
         scriptsAppFolder: 'scripts/app/',
         scriptsAppFiles: [
             'scripts/app/init.js',
-            'templates/client.build.js',
+            'templates/client-side.build.js',
             'scripts/app/*.js',
             'scripts/app/*/module.js',
             'scripts/app/*/*.js',
@@ -38,8 +41,8 @@ var
         /* Templates */
         templatesFolder: 'templates/',
         templatesFiles: [
-            'templates/client/*.html',
-            'templates/client/*/*.html'
+            'templates/client-side/*.html',
+            'templates/client-side/*/*.html'
         ]
     };
 
@@ -48,16 +51,19 @@ gulp
     /* Stylesheets */
     .task('stylus', function () {
         gulp.src(paths.stylusFiles)
-            .pipe(concat('app.build.styl'))
+            .pipe(concat('stylus.build.styl'))
             .pipe(stylus({pretty: true}))
             .pipe(cssBase64())
+            .pipe(gulp.dest(paths.stylesheetsFolder))
+            .pipe(minifyCSS())
+            .pipe(rename({suffix: '.min'}))
             .pipe(gulp.dest(paths.stylesheetsFolder));
     })
 
     /* Templates */
     .task('templates', function () {
         gulp.src(paths.templatesFiles)
-            .pipe(templateCache({module: 'app', filename: 'client.build.js'}))
+            .pipe(templateCache({module: 'app', filename: 'client-side.build.js'}))
             .pipe(gulp.dest(paths.templatesFolder));
     })
 
@@ -69,9 +75,12 @@ gulp
     })
 
     /* Scripts app */
-    .task('js-app', function () {
+    .task('js-app', ['templates'], function () {
         gulp.src(paths.scriptsAppFiles)
             .pipe(concat('app.build.js'))
+            .pipe(gulp.dest(paths.scriptsFolder))
+            .pipe(uglify())
+            .pipe(rename({suffix: '.min'}))
             .pipe(gulp.dest(paths.scriptsFolder));
     });
 
@@ -82,7 +91,6 @@ gulp
         gulp.start('stylus');
         gulp.start('js-lib');
         gulp.start('js-app');
-        gulp.start('templates');
     })
 
     /* Watch */

@@ -9,6 +9,8 @@
     "gulp-uglify": "*",
     "gulp-angular-templatecache": "*",
     "gulp-stylus": "*",
-    "gulp-css-base64": "*"
+    "gulp-css-base64": "*",
+    "gulp-minify-css": "*",
+    "gulp-rename": "*"
   }
 }

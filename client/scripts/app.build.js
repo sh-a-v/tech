@@ -141,9 +141,9 @@ app
         }
     });
 app.menu = angular.module('app.menu', ['ui.router']);
+app.user = angular.module('app.user', []);
 app.popupPage = angular.module('app.popupPage', []);
 
-app.user = angular.module('app.user', []);
 /**
  * Controllers
  */
