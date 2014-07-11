@@ -5,7 +5,7 @@ var
 
     CLIENT_SETTINGS = {
         STATIC_FILES_PATH: path.join(__dirname, '../..', 'client'),
-        BASE_TEMPLATE_PATH: path.join(__dirname, '../..', 'client/templates/server.base.html')
+        BASE_TEMPLATE_PATH: path.join(__dirname, '../..', 'client/templates/server-side.base.html')
     };
 
 module.exports = CLIENT_SETTINGS;
