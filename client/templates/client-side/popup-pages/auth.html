@@ -1,0 +1,12 @@
+<div class="s-popup-auth">
+    <form ng-submit="user.auth.submit()">
+        <div class="s-popup-auth-message" ng-class="user.auth.message.type" ng-bind="user.auth.message.value"></div>
+        <input type="email" name="email" placeholder="Email" required ng-model="user.email">
+        <input type="password" name="password" placeholder="Password" required ng-model="user.password" ng-disabled="user.auth.isRecovery()">
+        <button>Отправить</button>
+        <div class="s-popup-auth-links">
+            <a class="s-popup-auth-links-item" ng-click="user.auth.toggleRecovery()">{{ user.auth.isRecovery() ? 'Авторизоваться' : 'Восстановить пароль' }}</a>
+            <a class="s-popup-auth-links-item">Соглашение</a>
+        </div>
+    </form>
+</div>
