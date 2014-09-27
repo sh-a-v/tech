@@ -15,7 +15,11 @@ var
     /* Stylesheets */
     stylesheetsFolder: 'stylesheets/',
     stylusFiles: [
-      'stylesheets/stylus/vars/*.styl',
+      'stylesheets/stylus/constants/*.styl',
+
+      'stylesheets/stylus/general/*.styl',
+      'stylesheets/stylus/general/**/*.styl',
+
       'stylesheets/stylus/*.styl',
       'stylesheets/stylus/**/*.styl'
     ],
@@ -23,17 +27,24 @@ var
     /* Scripts */
     scriptsFolder: 'scripts/',
     scriptsLibFiles: [
-      'scripts/lib/angular.min.js',
-      'scripts/lib/*.js'
+      'scripts/lib/angular/angular.min.js',
+      'scripts/lib/angular/*.js',
+
+      'scripts/lib/*.js',
+      'scripts/lib/**/*.js'
     ],
     scriptsAppFolder: 'scripts/app/',
     scriptsAppFiles: [
       'scripts/app/init.js',
-      'scripts/app/*.js',
-      'scripts/app/*/module.js',
-      'scripts/app/*/*.js',
+
+      'scripts/app/general/*.js',
+      'scripts/app/general/**/*.js',
+
+      'scripts/app/module.js',
       'scripts/app/**/module.js',
+      'scripts/app/*.js',
       'scripts/app/**/*.js',
+
       '!scripts/lib/*'
     ],
 
@@ -74,7 +85,7 @@ gulp
   })
 
   /* Scripts app */
-  .task('js-app', ['templates'], function () {
+  .task('js-app', function () {
     gulp.src(paths.scriptsAppFiles)
       .pipe(concat('app.build.js'))
       .pipe(gulp.dest(paths.scriptsFolder))
@@ -88,6 +99,7 @@ gulp
   /* Build */
   .task('build', function () {
     gulp.start('stylus');
+    gulp.start('templates');
     gulp.start('js-lib');
     gulp.start('js-app');
   })

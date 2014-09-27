@@ -1,20 +1,28 @@
-.desktop-menu-active
-  .s-menu
-    @media media-desktop
-      opacity 1
-
 .s-menu
-  display inline-block
   position absolute
+  top 0
+  z-index 9
+
   width menu-width
   height 100%
+  padding header-height 0 0
   box-sizing border-box
-  padding 0 0 header-height
-  font-size 12px
-  transition all 0.3s
+  overflow hidden
+
+  font-size 0
+  background #000
 
   @media media-desktop
-    opacity 0
+    left 0
+    display inline-block
+
+  @media media-tablet
+    left -1 * menu-width
+    display none
+
+  @media media-phone
+    left -1 * menu-width
+    display none
 
   &-inner-wrapper
     display inline-block

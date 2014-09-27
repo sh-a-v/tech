@@ -7,24 +7,25 @@
     <link rel="stylesheet" href="/stylesheets/stylus.build.min.css">
 </head>
 <body>
-    <section class="s-app-container preload" resize preload>
-        <header class="s-header" header-view></header>
-        <main class="s-main desktop-menu-active" main-state>
-            <nav class="s-menu" menu-view></nav>
-            <section class="s-content">
-                <div class="s-content-inner-wrapper"></div>
-            </section>
-        </main>
-        <section class="s-popup-page" popup-page-state>
+    <app-container class="s-app-container preload" window-size preload>
+        <header class="s-header">
+            <div class="s-header-button s-header-button-menu" ng-click="menu.toggle()"><i class="s-icon s-icon-menu"></i></div>
+        </header>
+        <menu class="s-menu"></menu>
+        <content-page class="s-content-page">
+            <div class="s-content-page-inner-wrapper"></div>
+        </content-page>
+        <popup-page class="s-popup-page">
             <div class="s-popup-page-head" popup-header-view></div>
             <div class="s-popup-page-body">
-                <section class="s-popup" auth-view></section>
-                <section class="s-popup" profile-view></section>
+                <!--<section class="s-popup" auth-view></section>
+                <section class="s-popup" profile-view></section>-->
             </div>
-        </section>
-    </section>
-<script src="/scripts/lib.build.min.js"></script>
-<script src="/scripts/app.build.min.js"></script>
-<script src="/templates/client-side.build.js"></script>
+        </popup-page>
+    </app-container>
+
+    <script src="/scripts/lib.build.min.js"></script>
+    <script src="/scripts/app.build.js"></script>
+    <script src="/templates/client-side.build.js"></script>
 </body>
 </html>
