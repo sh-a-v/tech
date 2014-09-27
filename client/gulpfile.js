@@ -12,59 +12,58 @@ var
 
 var
   paths = {
-  /* Stylesheets */
-  stylesheetsFolder: 'stylesheets/',
-  stylusFiles: [
-    'stylesheets/stylus/vars/*.styl',
-    'stylesheets/stylus/*.styl',
-    'stylesheets/stylus/**/*.styl'
-  ],
+    /* Stylesheets */
+    stylesheetsFolder: 'stylesheets/',
+    stylusFiles: [
+      'stylesheets/stylus/vars/*.styl',
+      'stylesheets/stylus/*.styl',
+      'stylesheets/stylus/**/*.styl'
+    ],
 
-  /* Scripts */
-  scriptsFolder: 'scripts/',
-  scriptsLibFiles: [
-    'scripts/lib/angular.min.js',
-    'scripts/lib/*.js'
-  ],
-  scriptsAppFolder: 'scripts/app/',
-  scriptsAppFiles: [
-    'scripts/app/init.js',
-    'templates/client-side.build.js',
-    'scripts/app/*.js',
-    'scripts/app/*/module.js',
-    'scripts/app/*/*.js',
-    'scripts/app/**/module.js',
-    'scripts/app/**/*.js',
-    '!scripts/lib/*'
-  ],
+    /* Scripts */
+    scriptsFolder: 'scripts/',
+    scriptsLibFiles: [
+      'scripts/lib/angular.min.js',
+      'scripts/lib/*.js'
+    ],
+    scriptsAppFolder: 'scripts/app/',
+    scriptsAppFiles: [
+      'scripts/app/init.js',
+      'scripts/app/*.js',
+      'scripts/app/*/module.js',
+      'scripts/app/*/*.js',
+      'scripts/app/**/module.js',
+      'scripts/app/**/*.js',
+      '!scripts/lib/*'
+    ],
 
-  /* Templates */
-  templatesFolder: 'templates/',
-  templatesFiles: [
-    'templates/client-side/*.html',
-    'templates/client-side/**/*.html'
-  ]
+    /* Templates */
+    templatesFolder: 'templates/',
+    templatesFiles: [
+      'templates/client-side/*.html',
+      'templates/client-side/**/*.html'
+    ]
   };
 
 
 gulp
   /* Stylesheets */
   .task('stylus', function () {
-  gulp.src(paths.stylusFiles)
-    .pipe(concat('stylus.build.styl'))
-    .pipe(stylus({pretty: true}))
-    .pipe(cssBase64())
-    .pipe(gulp.dest(paths.stylesheetsFolder))
-    .pipe(minifyCSS())
-    .pipe(rename({suffix: '.min'}))
-    .pipe(gulp.dest(paths.stylesheetsFolder));
+    gulp.src(paths.stylusFiles)
+      .pipe(concat('stylus.build.styl'))
+      .pipe(stylus({pretty: true}))
+      .pipe(cssBase64())
+      .pipe(gulp.dest(paths.stylesheetsFolder))
+      .pipe(minifyCSS())
+      .pipe(rename({suffix: '.min'}))
+      .pipe(gulp.dest(paths.stylesheetsFolder));
   })
 
   /* Templates */
   .task('templates', function () {
-  gulp.src(paths.templatesFiles)
-    .pipe(templateCache({module: 'app', filename: 'client-side.build.js'}))
-    .pipe(gulp.dest(paths.templatesFolder));
+    gulp.src(paths.templatesFiles)
+      .pipe(templateCache({module: 'app', filename: 'client-side.build.js'}))
+      .pipe(gulp.dest(paths.templatesFolder));
   })
 
   /* Scripts lib */
@@ -98,4 +97,7 @@ gulp
     gulp.watch(paths.stylusFiles, ['stylus']);
     gulp.watch(paths.templatesFiles, ['templates']);
     gulp.watch(paths.scriptsAppFiles, ['js-app']);
-  });
+  })
+
+  /* Default */
+  .task('default', ['build', 'watch']);

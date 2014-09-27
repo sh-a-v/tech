@@ -2,15 +2,15 @@
   "name": "tech-client",
   "version": "0.0.1",
   "private": true,
-  "dependencies": {
-    "gulp": "*",
-    "gulp-util": "*",
-    "gulp-concat": "*",
-    "gulp-uglify": "*",
-    "gulp-angular-templatecache": "*",
-    "gulp-stylus": "*",
-    "gulp-css-base64": "*",
-    "gulp-minify-css": "*",
-    "gulp-rename": "*"
+  "devDependencies": {
+    "gulp": "^3.8.8",
+    "gulp-rename": "^1.2.0",
+    "gulp-util": "^3.0.1",
+    "gulp-minify-css": "^0.3.10",
+    "gulp-concat": "^2.4.1",
+    "gulp-angular-templatecache": "^1.4.1",
+    "gulp-uglify": "^1.0.1",
+    "gulp-css-base64": "^1.2.5",
+    "gulp-stylus": "^1.3.3"
   }
 }

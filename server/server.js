@@ -28,8 +28,8 @@ app
 
 app
   .use(compression())
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({
+  .use(bodyParser.json())
+  .use(bodyParser.urlencoded({
   extended: true
   }))
   .use(session({
