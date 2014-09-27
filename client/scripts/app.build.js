@@ -374,9 +374,9 @@ app.user
   .factory('Auth', ['$resource', function ($resource) {
     return $resource('/auth/', null, {'update': { method: 'PUT' }});
   }]);
+app.menu = angular.module('app.menu', ['ui.router']);
 app.popupPage = angular.module('app.popupPage', []);
 
-app.menu = angular.module('app.menu', ['ui.router']);
 app.menu
   .controller('MenuCtrl', ['$scope', '$state', function ($scope, $state) {
     $scope.menu = {

@@ -1,26 +1,26 @@
 {
-    "name": "tech-server",
-    "version": "0.0.1",
-    "private": true,
-    "scripts": {
-        "start": "node/supervisor server.js"
-    },
-    "dependencies": {
-        "express": "~4.4.5",
-        "path": "",
-        "mongoose": "~3.8.12",
-        "body-parser": "latest",
-        "express-session": "1.5.2",
-        "passport": "latest",
-        "passport-local": "latest",
-        "passport-facebook": "~1.0.3",
-        "passport-twitter": "~1.0.2",
-        "passport-google-oauth": "~0.1.5",
-        "bcrypt-nodejs": "latest",
-        "connect-flash": "~0.1.1",
-        "password-generator": "latest",
-        "nodemailer": "latest",
-        "connect-mongo": "latest",
-        "compression": "latest"
-    }
+  "name": "tech-server",
+  "version": "0.0.1",
+  "private": false,
+  "scripts": {
+    "start": "node/supervisor server.js"
+  },
+  "devDependencies": {
+    "express": "^4.9.5",
+    "path": "^0.4.9",
+    "connect-flash": "^0.1.1",
+    "bcrypt-nodejs": "0.0.3",
+    "passport-local": "^1.0.0",
+    "passport": "^0.2.1",
+    "passport-google-oauth": "^0.1.5",
+    "compression": "^1.1.0",
+    "body-parser": "^1.9.0",
+    "passport-facebook": "^1.0.3",
+    "password-generator": "^0.2.2",
+    "passport-twitter": "^1.0.2",
+    "nodemailer": "^1.3.0",
+    "express-session": "^1.8.2",
+    "connect-mongo": "^0.4.1",
+    "mongoose": "^3.8.16"
+  }
 }
