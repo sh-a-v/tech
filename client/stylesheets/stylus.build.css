@@ -301,8 +301,8 @@ a {
 }
 .s-menu-list-item-head-link-icon-back {
   position: absolute;
-  top: 3px;
-  left: 3px;
+  top: 0;
+  left: 1px;
   display: none;
   width: 12px;
   height: 12px;
