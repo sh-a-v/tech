@@ -1,7 +1,6 @@
 app.controller('MenuCtrl', ['$scope', '$state', function ($scope, $state) {
   $scope.menu = {
     active: $scope.windowSize.isDesktopWidth() ? true : false,
-    activeItem: null,
 
     initialize: function () {
       this.setEventListeners();
@@ -38,6 +37,12 @@ app.controller('MenuCtrl', ['$scope', '$state', function ($scope, $state) {
       this._broadcastMenuToggled();
     },
 
+    toggleItem: function (itemName) {
+      if ($state.$current.name === itemName) {
+        this._broadcastMenuItemToggled(itemName);
+      }
+    },
+
     isActive: function () {
       return this.active;
     },
@@ -52,6 +57,10 @@ app.controller('MenuCtrl', ['$scope', '$state', function ($scope, $state) {
 
     _broadcastMenuToggled: function () {
       $scope.$broadcast('menu:toggled');
+    },
+
+    _broadcastMenuItemToggled: function (itemName) {
+      $scope.$broadcast('menu:itemToggled', itemName);
     }
   };
 

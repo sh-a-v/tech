@@ -1,45 +1,60 @@
 <div class="s-menu-inner-wrapper">
     <ul class="s-menu-list">
 
-        <li class="s-menu-list-item" ui-sref-active="active">
-            <div class="s-menu-list-item-head" ng-click="menu.toggleItemState($event)">
-                <a class="s-menu-list-item-head-link" ui-sref="search">
+        <li id="menu-item-search" class="s-menu-list-item" ui-sref-active="active expanded">
+            <div class="s-menu-list-item-head">
+                <a class="s-menu-list-item-head-link" ui-sref="search" ng-click="menu.toggleItem('search')">
                     <span class="s-menu-list-item-head-link-icon"><i class="s-icon s-icon-search"></i></span>
                     <span class="s-menu-list-item-head-link-label">Поиск</span>
+                    <span class="s-menu-list-item-head-link-icon s-menu-list-item-head-link-icon-back"><i class="s-icon s-icon-back"></i></span>
                 </a>
             </div>
-            <div class="s-menu-list-item-body" menu-item-search></div>
+            <div class="s-menu-list-item-body"></div>
         </li>
 
-        <li class="s-menu-list-item" ui-sref-active="active">
-            <div class="s-menu-list-item-head" ng-click="menu.toggleItemState($event)">
-                <a class="s-menu-list-item-head-link" ui-sref="cabinet">
+        <li id="menu-item-cabinet" class="s-menu-list-item" ui-sref-active="active expanded">
+            <div class="s-menu-list-item-head">
+                <a class="s-menu-list-item-head-link" ui-sref="cabinet" ng-click="menu.toggleItem('cabinet')">
                     <span class="s-menu-list-item-head-link-icon"><i class="s-icon s-icon-cabinet"></i></span>
                     <span class="s-menu-list-item-head-link-label">Кабинет</span>
+                    <span class="s-menu-list-item-head-link-icon s-menu-list-item-head-link-icon-back"><i class="s-icon s-icon-back"></i></span>
                 </a>
             </div>
-            <div class="s-menu-list-item-body" menu-item-cabinet></div>
+            <div class="s-menu-list-item-body"></div>
         </li>
 
-        <li class="s-menu-list-item" ui-sref-active="active">
-            <div class="s-menu-list-item-head" ng-click="menu.toggleItemState($event)">
-                <a class="s-menu-list-item-head-link" ui-sref="catalog">
+        <li id="menu-item-catalog" class="s-menu-list-item" ui-sref-active="active expanded">
+            <div class="s-menu-list-item-head">
+                <a class="s-menu-list-item-head-link" ui-sref="catalog" ng-click="menu.toggleItem('catalog')">
                     <span class="s-menu-list-item-head-link-icon"><i class="s-icon s-icon-catalog"></i></span>
                     <span class="s-menu-list-item-head-link-label">Каталог</span>
+                    <span class="s-menu-list-item-head-link-icon s-menu-list-item-head-link-icon-back"><i class="s-icon s-icon-back"></i></span>
                 </a>
             </div>
-            <div class="s-menu-list-item-body" menu-item-catalog></div>
+            <div class="s-menu-list-item-body"></div>
         </li>
 
-        <li class="s-menu-list-item" ui-sref-active="active">
-            <div class="s-menu-list-item-head" ng-click="menu.toggleItemState($event)">
-                <a class="s-menu-list-item-head-link" ui-sref="collections">
+        <li id="menu-item-collections" class="s-menu-list-item" ui-sref-active="active expanded">
+            <div class="s-menu-list-item-head">
+                <a class="s-menu-list-item-head-link" ui-sref="collections" ng-click="menu.toggleItem('collections')">
                     <span class="s-menu-list-item-head-link-icon"><i class="s-icon s-icon-collections"></i></span>
                     <span class="s-menu-list-item-head-link-label">Коллекции</span>
+                    <span class="s-menu-list-item-head-link-icon s-menu-list-item-head-link-icon-back"><i class="s-icon s-icon-back"></i></span>
                 </a>
             </div>
-            <div class="s-menu-list-item-body" menu-item-collections></div>
+            <div class="s-menu-list-item-body"></div>
+        </li>
+
+        <li class="s-menu-list-item index" ui-sref-active="hidden">
+            <div class="s-menu-list-item-head">
+                <a class="s-menu-list-item-head-link" ui-sref="index">
+                    <span class="s-menu-list-item-head-link-icon"><i class="s-icon s-icon-home"></i></span>
+                    <span class="s-menu-list-item-head-link-label">Главная</span>
+                </a>
+            </div>
         </li>
 
     </ul>
+
+    <div class="s-menu-close" ng-class="{active: menu.isActive()}" ng-click="menu.toggle()"></div>
 </div>

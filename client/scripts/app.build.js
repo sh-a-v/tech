@@ -1,41 +1,37 @@
 'use strict';
 
-var
-  app = angular.module('app', ['ui.router', 'ngResource', 'ngTouch', 'app.user']);
+var app = angular.module('app', ['ui.router', 'ngResource', 'ngTouch', 'app.user']);
 
-app
-  .config( function ($stateProvider, $locationProvider, $resourceProvider) {
-    $stateProvider
-      .state('index', {
-        url: '/'
-        /*views: {
-          'viewMenu': { templateUrl: 'menu.html' }
-        }*/
-      })
-      .state('search', {
-        url: '/search/'
-      })
-      .state('cabinet', {
-        url: '/cabinet/',
-        templateUrl: 'content-pages/cabinet.html'
-      })
-      .state('catalog', {
-        url: '/catalog/',
-        templateUrl: 'content-pages/catalog.html'
-      })
-      .state('collections', {
-        url: '/collections/',
-        templateUrl: 'content-pages/collections.html'
-      });
+app.config( function ($stateProvider, $locationProvider, $resourceProvider) {
+  $stateProvider
+    .state('index', {
+      url: '/'
+    })
+    .state('search', {
+      url: '/search'
+    })
+    .state('cabinet', {
+      url: '/cabinet',
+      templateUrl: 'content-pages/cabinet.html'
+    })
+    .state('catalog', {
+      url: '/catalog',
+      templateUrl: 'content-pages/catalog.html'
+    })
+    .state('collections', {
+      url: '/collections',
+      templateUrl: 'content-pages/collections.html'
+    });
 
-    $locationProvider
-      .html5Mode(true);
+  $locationProvider
+    .html5Mode({
+      enabled: true,
+      requireBase: false
+    });
 
-    $resourceProvider
-      .defaults.stripTrailingSlashes = false;
-  });
-
-
+  $resourceProvider
+    .defaults.stripTrailingSlashes = true;
+});
 
 app.controller('AppContainerCtrl', ['$scope', function ($scope) {
   $scope.appContainer = {
@@ -361,7 +357,6 @@ app.directive('header', function () {
 app.controller('MenuCtrl', ['$scope', '$state', function ($scope, $state) {
   $scope.menu = {
     active: $scope.windowSize.isDesktopWidth() ? true : false,
-    activeItem: null,
 
     initialize: function () {
       this.setEventListeners();
@@ -398,6 +393,12 @@ app.controller('MenuCtrl', ['$scope', '$state', function ($scope, $state) {
       this._broadcastMenuToggled();
     },
 
+    toggleItem: function (itemName) {
+      if ($state.$current.name === itemName) {
+        this._broadcastMenuItemToggled(itemName);
+      }
+    },
+
     isActive: function () {
       return this.active;
     },
@@ -412,6 +413,10 @@ app.controller('MenuCtrl', ['$scope', '$state', function ($scope, $state) {
 
     _broadcastMenuToggled: function () {
       $scope.$broadcast('menu:toggled');
+    },
+
+    _broadcastMenuItemToggled: function (itemName) {
+      $scope.$broadcast('menu:itemToggled', itemName);
     }
   };
 
@@ -428,6 +433,12 @@ app.directive('menu', ['$window', function ($window) {
     link: function (scope, el, attrs) {
       scope.menu.view = {
         menuEl: el,
+        menuItemEls: {
+          search: angular.element(document.getElementById('menu-item-search')),
+          cabinet: angular.element(document.getElementById('menu-item-cabinet')),
+          catalog: angular.element(document.getElementById('menu-item-catalog')),
+          collections: angular.element(document.getElementById('menu-item-collections'))
+        },
 
         desktopShiftValue: -300,
         tabletAndPhoneShiftValue: 300,
@@ -439,6 +450,7 @@ app.directive('menu', ['$window', function ($window) {
         setEventListeners: function () {
           scope.$on('menu:activated', this.show.bind(this));
           scope.$on('menu:deactivated', this.hide.bind(this));
+          scope.$on('menu:itemToggled', this.toggleItemEl.bind(this));
         },
 
         show: function () {
@@ -459,7 +471,8 @@ app.directive('menu', ['$window', function ($window) {
             opacity: opacityValue
           }, {
             duration: 400,
-            easing: 'easy-out'
+            easing: 'easy-out',
+            display: 'inline-block'
           });
         },
 
@@ -468,6 +481,11 @@ app.directive('menu', ['$window', function ($window) {
             duration: 400,
             easing: 'easy-out'
           });
+        },
+
+        toggleItemEl: function (e, itemName) {
+          var itemEl = this.menuItemEls[itemName];
+          itemEl.toggleClass('expanded');
         }
       };
 
