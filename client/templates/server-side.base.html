@@ -4,22 +4,21 @@
     <title></title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui">
+    <meta name="mobile-web-app-capable" content="yes">
     <link rel="stylesheet" href="/stylesheets/stylus.build.min.css">
 </head>
 <body>
     <app-container class="s-app-container preload" window-size preload>
-        <header class="s-header">
-            <div class="s-header-button s-header-button-menu" ng-click="menu.toggle()"><i class="s-icon s-icon-menu"></i></div>
-        </header>
+        <header class="s-header"></header>
         <menu class="s-menu"></menu>
         <content-page class="s-content-page">
             <div class="s-content-page-inner-wrapper"></div>
         </content-page>
         <popup-page class="s-popup-page">
-            <div class="s-popup-page-head" popup-header-view></div>
+            <popup-header class="s-popup-header"></popup-header>
             <div class="s-popup-page-body">
-                <!--<section class="s-popup" auth-view></section>
-                <section class="s-popup" profile-view></section>-->
+                <auth class="s-popup"></auth>
+                <profile class="s-popup"></profile>
             </div>
         </popup-page>
     </app-container>
@@ -27,5 +26,8 @@
     <script src="/scripts/lib.build.min.js"></script>
     <script src="/scripts/app.build.js"></script>
     <script src="/templates/client-side.build.js"></script>
+    <script>
+
+    </script>
 </body>
 </html>

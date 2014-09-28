@@ -1,4 +1,4 @@
-app.user.directive('userButton', function () {
+app.user.directive('user', function () {
   return {
     restrict: 'EA',
     controller: 'UserCtrl'

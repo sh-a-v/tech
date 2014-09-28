@@ -16,11 +16,19 @@ app.directive('popupPage', function () {
         },
 
         show: function () {
-
+          Velocity(this.popupPageEl, {
+            opacity: 1
+          }, {
+            display: 'inline-block',
+            duration: 200
+          });
         },
 
         hide: function () {
-
+          Velocity(this.popupPageEl, 'reverse', {
+            display: 'none',
+            duration: 200
+          });
         }
       };
 

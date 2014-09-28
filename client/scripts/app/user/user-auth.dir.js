@@ -17,11 +17,19 @@ app.user.directive('auth', function () {
         },
 
         show: function () {
-
+          Velocity(this.authEl, {
+            top: 0
+          }, {
+            display: 'inline-block',
+            duration: 300
+          });
         },
 
         hide: function () {
-
+          Velocity(this.authEl, 'reverse', {
+            display: 'none',
+            duration: 300
+          });
         }
       };
 

@@ -5,7 +5,7 @@ app.user.directive('profile', function () {
     controller: 'ProfileCtrl',
     link: function (scope, el, attrs) {
       scope.user.profile.view = {
-        authEl: el,
+        profileEl: el,
 
         initialize: function () {
           this.setEventListeners();
@@ -17,11 +17,21 @@ app.user.directive('profile', function () {
         },
 
         show: function () {
-
+          Velocity(this.profileEl, {
+            top: 0
+          }, {
+            display: 'inline-block',
+            duration: 300,
+            easing: 'easy-out'
+          });
         },
 
         hide: function () {
-
+          Velocity(this.profileEl, 'reverse', {
+            display: 'none',
+            duration: 300,
+            easing: 'easy-out'
+          });
         }
       };
 

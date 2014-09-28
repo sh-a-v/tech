@@ -1,6 +1,9 @@
 app.user.controller('ProfileCtrl', ['$scope', function ($scope) {
   $scope.user.profile = {
-    name: 'Профиль',
+    popup: {
+      name: 'Профиль'
+    },
+
     active: false,
 
     initialize: function () {
@@ -43,7 +46,7 @@ app.user.controller('ProfileCtrl', ['$scope', function ($scope) {
 
     _broadcastUserProfileActivated: function () {
       $scope.$broadcast('user:profileActivated');
-      $scope.$broadcast('popup:activated');
+      $scope.$broadcast('popup:activated', this.popup);
     },
 
     _broadcastUserProfileDeactivated: function () {

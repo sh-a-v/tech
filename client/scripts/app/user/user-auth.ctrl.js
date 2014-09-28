@@ -1,6 +1,9 @@
 app.user.controller('AuthCtrl', ['$scope', 'Auth', function ($scope, Auth) {
   $scope.user.auth = {
-    name: 'Авторизация',
+    popup: {
+      name: 'Авторизация'
+    },
+
     active: false,
     recovery: false,
 
@@ -76,7 +79,7 @@ app.user.controller('AuthCtrl', ['$scope', 'Auth', function ($scope, Auth) {
         .then(this._checkResponse.bind(this));
     },
     
-    _checkResponse: function () {
+    _checkResponse: function (res) {
       $scope.user.authentication = res.authentication;
     },
 
@@ -123,7 +126,7 @@ app.user.controller('AuthCtrl', ['$scope', 'Auth', function ($scope, Auth) {
 
     _broadcastUserAuthActivated: function () {
       $scope.$broadcast('user:authActivated');
-      $scope.$broadcast('popup:activated');
+      $scope.$broadcast('popup:activated', this.popup);
     },
 
     _broadcastUserAuthDeactivated: function () {

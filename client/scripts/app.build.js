@@ -1,7 +1,7 @@
 'use strict';
 
 var
-  app = angular.module('app', ['ui.router', 'ngResource', 'ngTouch']);
+  app = angular.module('app', ['ui.router', 'ngResource', 'ngTouch', 'app.user']);
 
 app
   .config( function ($stateProvider, $locationProvider, $resourceProvider) {
@@ -34,6 +34,8 @@ app
     $resourceProvider
       .defaults.stripTrailingSlashes = false;
   });
+
+
 
 app.controller('AppContainerCtrl', ['$scope', function ($scope) {
   $scope.appContainer = {
@@ -294,20 +296,62 @@ app.directive('contentPage', function () {
           var translateXValue = scope.windowSize.isDesktopWidth() ? this.desktopShiftValue : this.tabletAndPhoneShiftValue;
 
           Velocity(this.contentPageEl, {
-            translateX: translateXValue
+            translateX: translateXValue,
+            translateZ: 0
           }, {
-            duration: 200
+            duration: 250,
+            easing: 'easy-out'
           });
         },
 
         reverseShift: function () {
           Velocity(this.contentPageEl, 'reverse', {
-            duration: 200
+            duration: 250,
+            easing: 'easy-out'
           });
         }
       };
 
       var self = scope.contentPage.view;
+
+      self.initialize();
+    }
+  };
+});
+
+app.controller('HeaderCtrl', ['$scope', function ($scope) {
+  $scope.header = {
+    initilaize: function () {
+      this.setEventListeners();
+    },
+
+    setEventListeners: function () {
+
+    }
+  };
+
+  var self = $scope.header;
+
+  self.initilaize();
+}]);
+
+app.directive('header', function () {
+  return {
+    restrict: 'EA',
+    templateUrl: 'header.html',
+    controller: 'HeaderCtrl',
+    link: function (scope, el, attrs) {
+      scope.header.view = {
+        initialize: function () {
+          this.setEventListeners();
+        },
+
+        setEventListeners: function () {
+
+        }
+      };
+
+      var self = scope.header.view;
 
       self.initialize();
     }
@@ -411,15 +455,18 @@ app.directive('menu', ['$window', function ($window) {
 
           Velocity(this.menuEl, {
             translateX: translateXValue,
+            translateZ: 0,
             opacity: opacityValue
           }, {
-            duration: 200
+            duration: 400,
+            easing: 'easy-out'
           });
         },
 
         reverseShift: function () {
           Velocity(this.menuEl, 'reverse', {
-            duration: 200
+            duration: 400,
+            easing: 'easy-out'
           });
         }
       };
@@ -431,9 +478,49 @@ app.directive('menu', ['$window', function ($window) {
   };
 }]);
 
+app.controller('PopupHeaderCtrl', ['$scope', function ($scope) {
+  $scope.popupHeader = {
+    initilaize: function () {
+      this.setEventListeners();
+    },
+
+    setEventListeners: function () {
+
+    }
+  };
+
+  var self = $scope.popupHeader;
+
+  self.initilaize();
+}]);
+
+app.directive('popupHeader', function () {
+  return {
+    restrict: 'EA',
+    templateUrl: 'popup-pages/popup-header.html',
+    controller: 'PopupHeaderCtrl',
+    link: function (scope, el, attrs) {
+      scope.popupHeader.view = {
+        initialize: function () {
+          this.setEventListeners();
+        },
+
+        setEventListeners: function () {
+
+        }
+      };
+
+      var self = scope.popupHeader.view;
+
+      self.initialize();
+    }
+  };
+});
+
 app.controller('PopupPageCtrl', ['$scope', function ($scope) {
   $scope.popupPage = {
     active: false,
+    popup: null,
 
     initialize: function () {
       this.setEventListeners();
@@ -444,12 +531,13 @@ app.controller('PopupPageCtrl', ['$scope', function ($scope) {
       $scope.$on('popup:deactivated', this.deactivate.bind(this));
     },
 
-    activate: function () {
+    activate: function (e, popup) {
       if (this.isActive()) {
         return;
       }
 
       this.active = true;
+      this.popup = popup;
       this._broadcastPopupPageActivated();
     },
 
@@ -459,6 +547,7 @@ app.controller('PopupPageCtrl', ['$scope', function ($scope) {
       }
 
       this.active = false;
+      this.popup = null;
       this._broadcastPopupPageDeactivated();
     },
 
@@ -502,11 +591,19 @@ app.directive('popupPage', function () {
         },
 
         show: function () {
-
+          Velocity(this.popupPageEl, {
+            opacity: 1
+          }, {
+            display: 'inline-block',
+            duration: 200
+          });
         },
 
         hide: function () {
-
+          Velocity(this.popupPageEl, 'reverse', {
+            display: 'none',
+            duration: 200
+          });
         }
       };
 
@@ -535,7 +632,10 @@ app.user = angular.module('app.user', []);
 
 app.user.controller('AuthCtrl', ['$scope', 'Auth', function ($scope, Auth) {
   $scope.user.auth = {
-    name: 'Авторизация',
+    popup: {
+      name: 'Авторизация'
+    },
+
     active: false,
     recovery: false,
 
@@ -611,7 +711,7 @@ app.user.controller('AuthCtrl', ['$scope', 'Auth', function ($scope, Auth) {
         .then(this._checkResponse.bind(this));
     },
     
-    _checkResponse: function () {
+    _checkResponse: function (res) {
       $scope.user.authentication = res.authentication;
     },
 
@@ -658,7 +758,7 @@ app.user.controller('AuthCtrl', ['$scope', 'Auth', function ($scope, Auth) {
 
     _broadcastUserAuthActivated: function () {
       $scope.$broadcast('user:authActivated');
-      $scope.$broadcast('popup:activated');
+      $scope.$broadcast('popup:activated', this.popup);
     },
 
     _broadcastUserAuthDeactivated: function () {
@@ -691,11 +791,19 @@ app.user.directive('auth', function () {
         },
 
         show: function () {
-
+          Velocity(this.authEl, {
+            top: 0
+          }, {
+            display: 'inline-block',
+            duration: 300
+          });
         },
 
         hide: function () {
-
+          Velocity(this.authEl, 'reverse', {
+            display: 'none',
+            duration: 300
+          });
         }
       };
 
@@ -708,7 +816,10 @@ app.user.directive('auth', function () {
 
 app.user.controller('ProfileCtrl', ['$scope', function ($scope) {
   $scope.user.profile = {
-    name: 'Профиль',
+    popup: {
+      name: 'Профиль'
+    },
+
     active: false,
 
     initialize: function () {
@@ -751,7 +862,7 @@ app.user.controller('ProfileCtrl', ['$scope', function ($scope) {
 
     _broadcastUserProfileActivated: function () {
       $scope.$broadcast('user:profileActivated');
-      $scope.$broadcast('popup:activated');
+      $scope.$broadcast('popup:activated', this.popup);
     },
 
     _broadcastUserProfileDeactivated: function () {
@@ -768,7 +879,7 @@ app.user.directive('profile', function () {
     controller: 'ProfileCtrl',
     link: function (scope, el, attrs) {
       scope.user.profile.view = {
-        authEl: el,
+        profileEl: el,
 
         initialize: function () {
           this.setEventListeners();
@@ -780,11 +891,21 @@ app.user.directive('profile', function () {
         },
 
         show: function () {
-
+          Velocity(this.profileEl, {
+            top: 0
+          }, {
+            display: 'inline-block',
+            duration: 300,
+            easing: 'easy-out'
+          });
         },
 
         hide: function () {
-
+          Velocity(this.profileEl, 'reverse', {
+            display: 'none',
+            duration: 300,
+            easing: 'easy-out'
+          });
         }
       };
 
@@ -825,7 +946,7 @@ app.user.controller('UserCtrl', ['$scope', function ($scope) {
   self.initialize();
 }]);
 
-app.user.directive('userButton', function () {
+app.user.directive('user', function () {
   return {
     restrict: 'EA',
     controller: 'UserCtrl'

@@ -1,7 +1,7 @@
 'use strict';
 
 var
-  app = angular.module('app', ['ui.router', 'ngResource', 'ngTouch']);
+  app = angular.module('app', ['ui.router', 'ngResource', 'ngTouch', 'app.user']);
 
 app
   .config( function ($stateProvider, $locationProvider, $resourceProvider) {
@@ -34,3 +34,5 @@ app
     $resourceProvider
       .defaults.stripTrailingSlashes = false;
   });
+
+

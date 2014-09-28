@@ -1,6 +1,7 @@
 app.controller('PopupPageCtrl', ['$scope', function ($scope) {
   $scope.popupPage = {
     active: false,
+    popup: null,
 
     initialize: function () {
       this.setEventListeners();
@@ -11,12 +12,13 @@ app.controller('PopupPageCtrl', ['$scope', function ($scope) {
       $scope.$on('popup:deactivated', this.deactivate.bind(this));
     },
 
-    activate: function () {
+    activate: function (e, popup) {
       if (this.isActive()) {
         return;
       }
 
       this.active = true;
+      this.popup = popup;
       this._broadcastPopupPageActivated();
     },
 
@@ -26,6 +28,7 @@ app.controller('PopupPageCtrl', ['$scope', function ($scope) {
       }
 
       this.active = false;
+      this.popup = null;
       this._broadcastPopupPageDeactivated();
     },
 

@@ -22,15 +22,18 @@ app.directive('contentPage', function () {
           var translateXValue = scope.windowSize.isDesktopWidth() ? this.desktopShiftValue : this.tabletAndPhoneShiftValue;
 
           Velocity(this.contentPageEl, {
-            translateX: translateXValue
+            translateX: translateXValue,
+            translateZ: 0
           }, {
-            duration: 200
+            duration: 250,
+            easing: 'easy-out'
           });
         },
 
         reverseShift: function () {
           Velocity(this.contentPageEl, 'reverse', {
-            duration: 200
+            duration: 250,
+            easing: 'easy-out'
           });
         }
       };

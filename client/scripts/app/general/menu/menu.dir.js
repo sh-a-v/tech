@@ -33,15 +33,18 @@ app.directive('menu', ['$window', function ($window) {
 
           Velocity(this.menuEl, {
             translateX: translateXValue,
+            translateZ: 0,
             opacity: opacityValue
           }, {
-            duration: 200
+            duration: 400,
+            easing: 'easy-out'
           });
         },
 
         reverseShift: function () {
           Velocity(this.menuEl, 'reverse', {
-            duration: 200
+            duration: 400,
+            easing: 'easy-out'
           });
         }
       };
