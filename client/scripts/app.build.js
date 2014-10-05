@@ -5,22 +5,27 @@ var app = angular.module('app', ['ui.router', 'ngResource', 'ngTouch', 'app.user
 app.config( function ($stateProvider, $locationProvider, $resourceProvider) {
   $stateProvider
     .state('index', {
-      url: '/'
+      url: '/',
+      title: 'Engineerium'
     })
     .state('search', {
-      url: '/search'
+      url: '/search',
+      title: 'Поиск'
     })
     .state('cabinet', {
       url: '/cabinet',
-      templateUrl: 'content-pages/cabinet.html'
+      templateUrl: 'content-pages/cabinet.html',
+      title: 'Кабинет'
     })
     .state('catalog', {
       url: '/catalog',
-      templateUrl: 'content-pages/catalog.html'
+      templateUrl: 'content-pages/catalog.html',
+      title: 'Каталог'
     })
     .state('collections', {
       url: '/collections',
-      templateUrl: 'content-pages/collections.html'
+      templateUrl: 'content-pages/collections.html',
+      title: 'Коллекции'
     });
 
   $locationProvider
@@ -33,7 +38,7 @@ app.config( function ($stateProvider, $locationProvider, $resourceProvider) {
     .defaults.stripTrailingSlashes = true;
 });
 
-app.controller('AppContainerCtrl', ['$scope', function ($scope) {
+app.controller('AppContainerCtrl', ['$scope', '$state', function ($scope, $state) {
   $scope.appContainer = {
     initialize: function () {
       this.setEventListeners();
@@ -41,6 +46,10 @@ app.controller('AppContainerCtrl', ['$scope', function ($scope) {
 
     setEventListeners: function () {
 
+    },
+
+    getCurrentStateTitle: function () {
+      return $state.current.title;
     }
   };
 
@@ -215,6 +224,45 @@ app.directive('windowSize', ['$window', function ($window) {
   };
 }]);
 
+app.controller('HeaderCtrl', ['$scope', function ($scope) {
+  $scope.header = {
+    initilaize: function () {
+      this.setEventListeners();
+    },
+
+    setEventListeners: function () {
+
+    }
+  };
+
+  var self = $scope.header;
+
+  self.initilaize();
+}]);
+
+app.directive('header', function () {
+  return {
+    restrict: 'EA',
+    templateUrl: 'header.html',
+    controller: 'HeaderCtrl',
+    link: function (scope, el, attrs) {
+      scope.header.view = {
+        initialize: function () {
+          this.setEventListeners();
+        },
+
+        setEventListeners: function () {
+
+        }
+      };
+
+      var self = scope.header.view;
+
+      self.initialize();
+    }
+  };
+});
+
 app.controller('ContentPageCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
   $scope.contentPage = {
     shift: false,
@@ -309,45 +357,6 @@ app.directive('contentPage', function () {
       };
 
       var self = scope.contentPage.view;
-
-      self.initialize();
-    }
-  };
-});
-
-app.controller('HeaderCtrl', ['$scope', function ($scope) {
-  $scope.header = {
-    initilaize: function () {
-      this.setEventListeners();
-    },
-
-    setEventListeners: function () {
-
-    }
-  };
-
-  var self = $scope.header;
-
-  self.initilaize();
-}]);
-
-app.directive('header', function () {
-  return {
-    restrict: 'EA',
-    templateUrl: 'header.html',
-    controller: 'HeaderCtrl',
-    link: function (scope, el, attrs) {
-      scope.header.view = {
-        initialize: function () {
-          this.setEventListeners();
-        },
-
-        setEventListeners: function () {
-
-        }
-      };
-
-      var self = scope.header.view;
 
       self.initialize();
     }

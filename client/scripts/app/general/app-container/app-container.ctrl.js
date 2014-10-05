@@ -1,4 +1,4 @@
-app.controller('AppContainerCtrl', ['$scope', function ($scope) {
+app.controller('AppContainerCtrl', ['$scope', '$state', function ($scope, $state) {
   $scope.appContainer = {
     initialize: function () {
       this.setEventListeners();
@@ -6,6 +6,10 @@ app.controller('AppContainerCtrl', ['$scope', function ($scope) {
 
     setEventListeners: function () {
 
+    },
+
+    getCurrentStateTitle: function () {
+      return $state.current.title;
     }
   };
 
