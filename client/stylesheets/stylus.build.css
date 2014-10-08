@@ -135,12 +135,22 @@ button::-moz-focus-inner {
   vertical-align: top;
   line-height: 50px;
 }
+.s-header-logo .s-icon-logo {
+  -webkit-animation: spin 1s linear infinite;
+  -moz-animation: spin 1s linear infinite;
+  -ms-animation: spin 1s linear infinite;
+  -o-animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite;
+  -moz-animation-play-state: paused;
+  -o-animation-play-state: paused;
+  -webkit-animation-play-state: paused;
+  animation-play-state: paused;
+}
 .s-header-logo .s-icon-logo.loading {
-  -webkit-animation: spin 2s linear infinite;
-  -moz-animation: spin 2s linear infinite;
-  -ms-animation: spin 2s linear infinite;
-  -o-animation: spin 2s linear infinite;
-  animation: spin 2s linear infinite;
+  -moz-animation-play-state: running;
+  -o-animation-play-state: running;
+  -webkit-animation-play-state: running;
+  animation-play-state: running;
 }
 @media screen and (min-width: 600px) and (max-width: 1024px) {
   .s-header-logo {

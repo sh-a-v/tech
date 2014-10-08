@@ -19,9 +19,12 @@
     vertical-align top
     line-height header-height
 
-    .s-icon-logo.loading
-      //transform translateZ(0)
-      animation spin 2s linear infinite
+    .s-icon-logo
+      animation spin 1s linear infinite
+      animation-play-state paused
+
+      &.loading
+        animation-play-state running
 
     @media media-tablet
       margin-left 0
