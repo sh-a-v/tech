@@ -224,6 +224,45 @@ app.directive('windowSize', ['$window', function ($window) {
   };
 }]);
 
+app.controller('HeaderCtrl', ['$scope', function ($scope) {
+  $scope.header = {
+    initilaize: function () {
+      this.setEventListeners();
+    },
+
+    setEventListeners: function () {
+
+    }
+  };
+
+  var self = $scope.header;
+
+  self.initilaize();
+}]);
+
+app.directive('header', function () {
+  return {
+    restrict: 'EA',
+    templateUrl: 'header.html',
+    controller: 'HeaderCtrl',
+    link: function (scope, el, attrs) {
+      scope.header.view = {
+        initialize: function () {
+          this.setEventListeners();
+        },
+
+        setEventListeners: function () {
+
+        }
+      };
+
+      var self = scope.header.view;
+
+      self.initialize();
+    }
+  };
+});
+
 app.controller('ContentPageCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
   $scope.contentPage = {
     shift: false,
@@ -318,45 +357,6 @@ app.directive('contentPage', function () {
       };
 
       var self = scope.contentPage.view;
-
-      self.initialize();
-    }
-  };
-});
-
-app.controller('HeaderCtrl', ['$scope', function ($scope) {
-  $scope.header = {
-    initilaize: function () {
-      this.setEventListeners();
-    },
-
-    setEventListeners: function () {
-
-    }
-  };
-
-  var self = $scope.header;
-
-  self.initilaize();
-}]);
-
-app.directive('header', function () {
-  return {
-    restrict: 'EA',
-    templateUrl: 'header.html',
-    controller: 'HeaderCtrl',
-    link: function (scope, el, attrs) {
-      scope.header.view = {
-        initialize: function () {
-          this.setEventListeners();
-        },
-
-        setEventListeners: function () {
-
-        }
-      };
-
-      var self = scope.header.view;
 
       self.initialize();
     }

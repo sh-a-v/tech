@@ -63,7 +63,7 @@ gulp
     gulp.src(paths.stylusFiles)
       .pipe(concat('stylus.build.styl'))
       .pipe(stylus({pretty: true}))
-      .pipe(cssBase64())
+      .pipe(cssBase64({maxWeightResource: 1000000}))
       .pipe(gulp.dest(paths.stylesheetsFolder))
       .pipe(minifyCSS())
       .pipe(rename({suffix: '.min'}))
