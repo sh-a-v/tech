@@ -1,37 +1,30 @@
-app.controller('PreloadCtrl', ['$scope', function ($scope) {
+app.controller('LoadingCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
   $scope.loading = {
-    requests: [],
+    requestsCount: 0,
 
     initialize: function () {
       this.setEventListeners();
     },
 
     setEventListeners: function () {
-      $scope.$on('$viewContentLoaded', this.deactivate.bind(this));
+      $rootScope.$on('server:request', this.addRequest.bind(this));
+      $rootScope.$on('server:response', this.removeRequest.bind(this));
     },
 
-    addRequest: function (req) {
-      this.requests.push(req);
+    addRequest: function () {
+      this.requestsCount += 1;
     },
 
-    removeRequest: function (req) {
-      this.requests = _.without(this.requests, req);
+    removeRequest: function () {
+      this.requestsCount -= 1;
     },
 
     isActive: function () {
-      return Boolean(this.requests.length);
-    },
-
-    _broadcastPreloadActivated: function () {
-      $scope.$broadcast('loading:activated');
-    },
-
-    _broadcastPreloadDeactivated: function () {
-      $scope.$broadcast('loading:deactivated');
+      return Boolean(this.requestsCount);
     }
   };
 
-  var self = $scope.preload;
+  var self = $scope.loading;
 
   self.initialize();
 }]);

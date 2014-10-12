@@ -2,7 +2,7 @@
 
 var app = angular.module('app', ['ui.router', 'ngResource', 'ngTouch', 'app.user']);
 
-app.config( function ($stateProvider, $locationProvider, $resourceProvider) {
+app.config(function ($stateProvider, $locationProvider, $resourceProvider, $httpProvider) {
   $stateProvider
     .state('index', {
       url: '/',
@@ -36,4 +36,7 @@ app.config( function ($stateProvider, $locationProvider, $resourceProvider) {
 
   $resourceProvider
     .defaults.stripTrailingSlashes = true;
+
+  $httpProvider
+    .interceptors.push('QueriesInterceptor');
 });

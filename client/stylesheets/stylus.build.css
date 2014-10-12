@@ -139,64 +139,10 @@ button::-moz-focus-inner {
   border-bottom: 1px solid #ecf0f1;
   font-size: 0;
 }
-.s-header-logo {
-  position: relative;
-  display: inline-block;
-  height: 50px;
-  vertical-align: top;
-  line-height: 50px;
-}
-.s-header-logo::after {
-  position: absolute;
-  top: -9px;
-  left: -15px;
-  z-index: -1;
-  display: none;
-  width: 72px;
-  height: 70px;
-  margin: 0;
-  padding: 0;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  border: 1px solid transparent;
-  border-bottom-color: #ecf0f1;
-  -moz-border-radius: 37px;
-  -webkit-border-radius: 37px;
-  border-radius: 37px;
-  content: '';
-  background-color: #fff;
-}
-.s-header-logo .s-icon-logo {
-  -webkit-animation: spin 1s linear infinite;
-  -moz-animation: spin 1s linear infinite;
-  -ms-animation: spin 1s linear infinite;
-  -o-animation: spin 1s linear infinite;
-  animation: spin 1s linear infinite;
-  -moz-animation-play-state: paused;
-  -o-animation-play-state: paused;
-  -webkit-animation-play-state: paused;
-  animation-play-state: paused;
-}
-.s-header-logo .s-icon-logo.loading {
-  -moz-animation-play-state: running;
-  -o-animation-play-state: running;
-  -webkit-animation-play-state: running;
-  animation-play-state: running;
-}
-@media screen and (min-width: 600px) and (max-width: 1024px) {
-  .s-header-logo {
-    margin-left: 0;
-  }
-}
-@media screen and (min-width: 0) and (max-width: 599px) {
-  .s-header-logo {
-    margin-left: 0;
-  }
-}
 .s-header-name {
   display: inline-block;
   height: 50px;
+  margin-left: 42px;
   font-size: 20px;
   font-family: Verdana;
   line-height: 50px;
@@ -270,6 +216,61 @@ body {
 }
 a {
   outline: none;
+}
+.s-logo {
+  position: fixed;
+  top: 0;
+  left: 15px;
+  z-index: 12;
+  display: inline-block;
+  height: 50px;
+  vertical-align: top;
+  line-height: 50px;
+/*&::after
+    position absolute
+    top -9px
+    left -15px
+    z-index -1
+
+    display none
+    width 72px
+    height 70px
+    margin 0
+    padding 0
+    box-sizing border-box
+    border 1px solid transparent
+    border-bottom-color grey
+    border-radius 37px
+
+    content ''
+    background-color white*/
+}
+.s-logo .s-icon-logo {
+  -webkit-animation: spin 1s linear infinite;
+  -moz-animation: spin 1s linear infinite;
+  -ms-animation: spin 1s linear infinite;
+  -o-animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite;
+  -moz-animation-play-state: paused;
+  -o-animation-play-state: paused;
+  -webkit-animation-play-state: paused;
+  animation-play-state: paused;
+}
+.s-logo .s-icon-logo.loading {
+  -moz-animation-play-state: running;
+  -o-animation-play-state: running;
+  -webkit-animation-play-state: running;
+  animation-play-state: running;
+}
+@media screen and (min-width: 600px) and (max-width: 1024px) {
+  .s-logo {
+    left: 10px;
+  }
+}
+@media screen and (min-width: 0) and (max-width: 599px) {
+  .s-logo {
+    left: 10px;
+  }
 }
 .s-menu {
   position: absolute;
@@ -609,8 +610,15 @@ a {
   border-bottom: none;
   text-align: left;
 }
-.s-popup-header-logo::after {
-  border-color: transparent;
+@media screen and (min-width: 600px) and (max-width: 1024px) {
+  .s-popup-header-name {
+    padding-left: 20px;
+  }
+}
+@media screen and (min-width: 0) and (max-width: 599px) {
+  .s-popup-header-name {
+    padding-left: 20px;
+  }
 }
 .s-popup-header-button {
   display: inline-block;

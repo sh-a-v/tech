@@ -4,9 +4,11 @@
   border-bottom none
   text-align left
 
-  &-logo
-    &::after
-      border-color transparent
+  &-name
+    @media media-tablet
+      padding-left 20px
+    @media media-phone
+      padding-left 20px
 
   &-button
     display inline-block

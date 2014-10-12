@@ -1,5 +1,4 @@
 <div class="s-header-button s-header-button-menu" ng-class="{active: menu.isActive()}" ng-click="menu.toggle()" ng-if="!windowSize.isDesktopWidth()"><i class="s-icon s-icon-menu"></i></div>
-<div class="s-header-logo" ng-click="menu.toggle()"><i class="s-icon s-icon-huge s-icon-logo"></i></div>
 <span class="s-header-name" ng-bind="appContainer.getCurrentStateTitle()"></span>
 <div class="s-header-right-buttons">
     <div class="s-header-button s-header-button-user" ng-click="user.showUser()" user><i class="s-icon s-icon-user" ng-class="{authenticated: user.isAuthenticated()}"></i></div>

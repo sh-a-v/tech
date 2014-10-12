@@ -2,7 +2,7 @@
 
 var app = angular.module('app', ['ui.router', 'ngResource', 'ngTouch', 'app.user']);
 
-app.config( function ($stateProvider, $locationProvider, $resourceProvider) {
+app.config(function ($stateProvider, $locationProvider, $resourceProvider, $httpProvider) {
   $stateProvider
     .state('index', {
       url: '/',
@@ -36,6 +36,9 @@ app.config( function ($stateProvider, $locationProvider, $resourceProvider) {
 
   $resourceProvider
     .defaults.stripTrailingSlashes = true;
+
+  $httpProvider
+    .interceptors.push('QueriesInterceptor');
 });
 
 app.controller('AppContainerCtrl', ['$scope', '$state', function ($scope, $state) {
@@ -221,66 +224,50 @@ app.directive('header', function () {
   };
 });
 
-app.controller('PreloadCtrl', ['$scope', function ($scope) {
+app.controller('LoadingCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
   $scope.loading = {
-    requests: [],
+    requestsCount: 0,
 
     initialize: function () {
       this.setEventListeners();
     },
 
     setEventListeners: function () {
-      $scope.$on('$viewContentLoaded', this.deactivate.bind(this));
+      $rootScope.$on('server:request', this.addRequest.bind(this));
+      $rootScope.$on('server:response', this.removeRequest.bind(this));
     },
 
-    addRequest: function (req) {
-      this.requests.push(req);
+    addRequest: function () {
+      this.requestsCount += 1;
     },
 
-    removeRequest: function (req) {
-      this.requests = _.without(this.requests, req);
+    removeRequest: function () {
+      this.requestsCount -= 1;
     },
 
     isActive: function () {
-      return Boolean(this.requests.length);
-    },
-
-    _broadcastPreloadActivated: function () {
-      $scope.$broadcast('loading:activated');
-    },
-
-    _broadcastPreloadDeactivated: function () {
-      $scope.$broadcast('loading:deactivated');
+      return Boolean(this.requestsCount);
     }
   };
 
-  var self = $scope.preload;
+  var self = $scope.loading;
 
   self.initialize();
 }]);
 
-app.directive('preload', ['$window', function ($window) {
+app.directive('loading', ['$window', function ($window) {
   return {
     restrict: 'EA',
-    controller: 'PreloadCtrl',
-    link: function (scope, el, attrs) {
-      scope.preload.view = {
-        loadingEl: el,
-
-        initialize: function () {
-          this.setEventListeners();
-        },
-
-        setEventListeners: function () {
-        }
-      };
-
-      var self = scope.preload.view;
-
-      self.initialize();
-    }
-  }
+    controller: 'LoadingCtrl'
+  };
 }]);
+
+app.directive('logo', function () {
+  return {
+    restrict: 'EA',
+    templateUrl: 'logo.html'
+  };
+});
 
 app.controller('MenuCtrl', ['$scope', '$state', function ($scope, $state) {
   $scope.menu = {
@@ -559,6 +546,41 @@ app.directive('popupPage', function () {
     }
   }
 });
+
+app.factory('QueriesInterceptor', ['$rootScope', '$q', function ($rootScope, $q) {
+  var serverBroadcast = {
+    _broadcastServerRequest: function () {
+      $rootScope.$emit('server:request');
+    },
+
+    _broadcastServerResponse: function () {
+      $rootScope.$emit('server:response');
+    },
+
+    _broadcastServerError: function () {
+      $rootScope.$emit('server:error');
+    }
+  };
+
+  return {
+    request: function (config) {
+      serverBroadcast._broadcastServerRequest();
+      return config;
+    },
+
+    response: function (response) {
+      serverBroadcast._broadcastServerResponse();
+      return response;
+    },
+
+    responseError: function (response) {
+      serverBroadcast._broadcastServerResponse();
+      serverBroadcast._broadcastServerError();
+
+      return $q.reject(response);
+    }
+  };
+}]);
 
 app.controller('WindowSizeCtrl', ['$rootScope', '$scope', '$window', function ($rootScope, $scope, $window) {
   $scope.windowSize = {

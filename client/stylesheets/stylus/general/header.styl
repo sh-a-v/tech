@@ -13,48 +13,10 @@
   border-bottom 1px solid grey
   font-size 0
 
-  &-logo
-    position relative
-
-    display inline-block
-    height header-height
-    vertical-align top
-    line-height header-height
-
-    &::after
-      position absolute
-      top -9px
-      left -15px
-      z-index -1
-
-      display none
-      width 72px
-      height 70px
-      margin 0
-      padding 0
-      box-sizing border-box
-      border 1px solid transparent
-      border-bottom-color grey
-      border-radius 37px
-
-      content ''
-      background-color white
-
-    .s-icon-logo
-      animation spin 1s linear infinite
-      animation-play-state paused
-
-      &.loading
-        animation-play-state running
-
-    @media media-tablet
-      margin-left 0
-    @media media-phone
-      margin-left 0
-
   &-name
     display inline-block
     height header-height
+    margin-left 42px
 
     font-size 20px
     font-family Verdana
