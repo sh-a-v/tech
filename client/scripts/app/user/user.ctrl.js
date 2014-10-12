@@ -1,6 +1,8 @@
 app.user.controller('UserCtrl', ['$scope', function ($scope) {
   $scope.user = {
     authentication: false,
+    publisher: false,
+    admin: false,
 
     initialize: function () {
       this.setEventListeners();
@@ -10,8 +12,10 @@ app.user.controller('UserCtrl', ['$scope', function ($scope) {
       $scope.$on('popupPage:deactivated', this.hideUser.bind(this));
     },
 
-    isAuthenticated: function () {
-      return this.authentication;
+    setUser: function (user) {
+      this.authentication = user.authentication;
+      this.publisher = Boolean(user.publisher);
+      this.admin = Boolean(user.admin);
     },
 
     showUser: function () {
@@ -20,6 +24,22 @@ app.user.controller('UserCtrl', ['$scope', function ($scope) {
 
     hideUser: function () {
       this.isAuthenticated() ? this.profile.deactivate() : this.auth.deactivate();
+    },
+
+    isAuthenticated: function () {
+      return this.authentication;
+    },
+
+    isUsual: function () {
+      return !this.isAdmin() && !this.isAdmin();
+    },
+
+    isPublisher: function () {
+      return this.publisher;
+    },
+
+    isAdmin: function () {
+      return this.admin;
     }
   };
 

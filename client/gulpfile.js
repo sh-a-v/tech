@@ -8,12 +8,15 @@ var
   minifyCSS = require('gulp-minify-css'),
   templateCache = require('gulp-angular-templatecache'),
   cssBase64 = require('gulp-css-base64'),
-  rename = require('gulp-rename');
+  rename = require('gulp-rename'),
+  browserSync = require('browser-sync');
+
+var
+  reload = browserSync.reload;
 
 var
   paths = {
-    /* Stylesheets */
-    stylesheetsFolder: 'stylesheets/',
+    stylesheetsFolder: 'stylesheets/',  /* Stylesheets */
     stylusFiles: [
       'stylesheets/stylus/constants/*.styl',
 
@@ -24,8 +27,7 @@ var
       'stylesheets/stylus/**/*.styl'
     ],
 
-    /* Scripts */
-    scriptsFolder: 'scripts/',
+    scriptsFolder: 'scripts/',  /* Scripts */
     scriptsLibFiles: [
       'scripts/lib/angular/angular.min.js',
       'scripts/lib/angular/*.js',
@@ -48,8 +50,7 @@ var
       '!scripts/lib/*'
     ],
 
-    /* Templates */
-    templatesFolder: 'templates/',
+    templatesFolder: 'templates/',  /* Templates */
     templatesFiles: [
       'templates/client-side/*.html',
       'templates/client-side/**/*.html'
@@ -58,9 +59,8 @@ var
 
 
 gulp
-  /* Stylesheets */
-  .task('stylus', function () {
-    gulp.src(paths.stylusFiles)
+  .task('stylus', function () {  /* Stylesheets */
+    return gulp.src(paths.stylusFiles)
       .pipe(concat('stylus.build.styl'))
       .pipe(stylus({pretty: true}))
       .pipe(cssBase64({maxWeightResource: 1000000}))
@@ -70,23 +70,20 @@ gulp
       .pipe(gulp.dest(paths.stylesheetsFolder));
   })
 
-  /* Templates */
-  .task('templates', function () {
-    gulp.src(paths.templatesFiles)
+  .task('templates', function () {  /* Templates */
+    return gulp.src(paths.templatesFiles)
       .pipe(templateCache({module: 'app', filename: 'client-side.build.js'}))
       .pipe(gulp.dest(paths.templatesFolder));
   })
 
-  /* Scripts lib */
-  .task('js-lib', function () {
-    gulp.src(paths.scriptsLibFiles)
+  .task('js-lib', function () {  /* Scripts lib */
+    return gulp.src(paths.scriptsLibFiles)
       .pipe(concat('lib.build.min.js'))
       .pipe(gulp.dest(paths.scriptsFolder));
   })
 
-  /* Scripts app */
-  .task('js-app', function () {
-    gulp.src(paths.scriptsAppFiles)
+  .task('js-app', function () {  /* Scripts app */
+    return gulp.src(paths.scriptsAppFiles)
       .pipe(concat('app.build.js'))
       .pipe(gulp.dest(paths.scriptsFolder))
       .pipe(uglify({mangle: false}))
@@ -96,20 +93,27 @@ gulp
 
 
 gulp
-  /* Build */
-  .task('build', function () {
+  .task('browser-sync', function() {
+    browserSync({
+      proxy: '192.168.1.250:1337',
+      host: '192.168.1.250',
+      port: '3001'
+    });
+  });
+
+
+gulp
+  .task('build', function () {  /* Build */
     gulp.start('stylus');
     gulp.start('templates');
     gulp.start('js-lib');
     gulp.start('js-app');
   })
 
-  /* Watch */
-  .task('watch', function() {
-    gulp.watch(paths.stylusFiles, ['stylus']);
-    gulp.watch(paths.templatesFiles, ['templates']);
-    gulp.watch(paths.scriptsAppFiles, ['js-app']);
+  .task('watch', ['browser-sync'], function() {  /* Watch */
+    gulp.watch(paths.stylusFiles, ['stylus', browserSync.reload]);
+    gulp.watch(paths.templatesFiles, ['templates', browserSync.reload]);
+    gulp.watch(paths.scriptsAppFiles, ['js-app', browserSync.reload]);
   })
 
-  /* Default */
-  .task('default', ['build', 'watch']);
+  .task('default', ['build', 'watch']);  /* Default */

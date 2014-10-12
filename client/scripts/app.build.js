@@ -82,187 +82,6 @@ app.directive('appContainer', function () {
   }
 });
 
-app.controller('PreloadCtrl', ['$scope', function ($scope) {
-  $scope.preload = {
-    active: true,
-
-    initialize: function () {
-      this.setEventListeners();
-    },
-
-    setEventListeners: function () {
-      $scope.$on('$viewContentLoaded', this.deactivate.bind(this));
-    },
-
-    activate: function () {
-      if (this.isActive()) {
-        return;
-      }
-
-      this.active = true;
-      this._broadcastPreloadActivated();
-    },
-
-    deactivate: function () {
-      if (!this.isActive()) {
-        return;
-      }
-
-      this.active = false;
-      this._broadcastPreloadDeactivated();
-    },
-
-    isActive: function () {
-      return this.active;
-    },
-
-    _broadcastPreloadActivated: function () {
-      $scope.$broadcast('preload:activated');
-    },
-
-    _broadcastPreloadDeactivated: function () {
-      $scope.$broadcast('preload:deactivated');
-    }
-  };
-
-  var self = $scope.preload;
-
-  self.initialize();
-}]);
-
-app.directive('preload', ['$window', function ($window) {
-  return {
-    restrict: 'EA',
-    controller: 'PreloadCtrl',
-    link: function (scope, el, attrs) {
-      scope.preload.view = {
-        preloadEl: el,
-
-        initialize: function () {
-
-        },
-
-        setEventListeners: function () {
-          scope.$on('preload:activated', this.showPreload.bind(this));
-          scope.$on('preload:deactivated', this.hidePreload.bind(this));
-        },
-
-        showPreload: function () {
-          this.preloadEl.addClass('active');
-        },
-
-        hidePreload: function () {
-          this.preloadEl.removeClass('active');
-        }
-      };
-
-      var self = scope.preload.view;
-
-      self.initialize();
-    }
-  }
-}]);
-
-app.controller('WindowSizeCtrl', ['$rootScope', '$scope', '$window', function ($rootScope, $scope, $window) {
-  $scope.windowSize = {
-    width: null,
-    height: null,
-
-    initialize: function () {
-      this.setEventListeners();
-      this.saveSize();
-    },
-
-    setEventListeners: function () {
-      $scope.$on('window:resized', this.saveSize.bind(this));
-    },
-
-    isDesktopWidth: function () {
-      return this.width > 1024;
-    },
-
-    saveSize: function () {
-      this.width = $window.innerWidth;
-      this.height = $window.innerHeight;
-
-      this._broadcastWindowSizeChanged();
-    },
-
-    _broadcastWindowSizeChanged: function () {
-      $scope.$broadcast('windowSize:changed');
-    }
-  };
-
-  var self = $scope.windowSize;
-
-  self.initialize();
-}]);
-
-app.directive('windowSize', ['$window', function ($window) {
-  return {
-    restrict: 'A',
-    controller: 'WindowSizeCtrl',
-    link: function (scope, el, attrs) {
-      scope.windowSize.view = {
-        initialize: function () {
-          this.setEventListeners();
-        },
-
-        setEventListeners: function () {
-          angular.element($window).on('resize', _.throttle(this._broadcastWindowResized, 300).bind(this));
-        },
-
-        _broadcastWindowResized: function () {
-          scope.$broadcast('window:resized');
-        }
-      };
-
-      var self = scope.windowSize.view;
-
-      self.initialize();
-    }
-  };
-}]);
-
-app.controller('HeaderCtrl', ['$scope', function ($scope) {
-  $scope.header = {
-    initilaize: function () {
-      this.setEventListeners();
-    },
-
-    setEventListeners: function () {
-
-    }
-  };
-
-  var self = $scope.header;
-
-  self.initilaize();
-}]);
-
-app.directive('header', function () {
-  return {
-    restrict: 'EA',
-    templateUrl: 'header.html',
-    controller: 'HeaderCtrl',
-    link: function (scope, el, attrs) {
-      scope.header.view = {
-        initialize: function () {
-          this.setEventListeners();
-        },
-
-        setEventListeners: function () {
-
-        }
-      };
-
-      var self = scope.header.view;
-
-      self.initialize();
-    }
-  };
-});
-
 app.controller('ContentPageCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
   $scope.contentPage = {
     shift: false,
@@ -362,6 +181,106 @@ app.directive('contentPage', function () {
     }
   };
 });
+
+app.controller('HeaderCtrl', ['$scope', function ($scope) {
+  $scope.header = {
+    initilaize: function () {
+      this.setEventListeners();
+    },
+
+    setEventListeners: function () {
+
+    }
+  };
+
+  var self = $scope.header;
+
+  self.initilaize();
+}]);
+
+app.directive('header', function () {
+  return {
+    restrict: 'EA',
+    templateUrl: 'header.html',
+    controller: 'HeaderCtrl',
+    link: function (scope, el, attrs) {
+      scope.header.view = {
+        initialize: function () {
+          this.setEventListeners();
+        },
+
+        setEventListeners: function () {
+
+        }
+      };
+
+      var self = scope.header.view;
+
+      self.initialize();
+    }
+  };
+});
+
+app.controller('PreloadCtrl', ['$scope', function ($scope) {
+  $scope.loading = {
+    requests: [],
+
+    initialize: function () {
+      this.setEventListeners();
+    },
+
+    setEventListeners: function () {
+      $scope.$on('$viewContentLoaded', this.deactivate.bind(this));
+    },
+
+    addRequest: function (req) {
+      this.requests.push(req);
+    },
+
+    removeRequest: function (req) {
+      this.requests = _.without(this.requests, req);
+    },
+
+    isActive: function () {
+      return Boolean(this.requests.length);
+    },
+
+    _broadcastPreloadActivated: function () {
+      $scope.$broadcast('loading:activated');
+    },
+
+    _broadcastPreloadDeactivated: function () {
+      $scope.$broadcast('loading:deactivated');
+    }
+  };
+
+  var self = $scope.preload;
+
+  self.initialize();
+}]);
+
+app.directive('preload', ['$window', function ($window) {
+  return {
+    restrict: 'EA',
+    controller: 'PreloadCtrl',
+    link: function (scope, el, attrs) {
+      scope.preload.view = {
+        loadingEl: el,
+
+        initialize: function () {
+          this.setEventListeners();
+        },
+
+        setEventListeners: function () {
+        }
+      };
+
+      var self = scope.preload.view;
+
+      self.initialize();
+    }
+  }
+}]);
 
 app.controller('MenuCtrl', ['$scope', '$state', function ($scope, $state) {
   $scope.menu = {
@@ -641,6 +560,67 @@ app.directive('popupPage', function () {
   }
 });
 
+app.controller('WindowSizeCtrl', ['$rootScope', '$scope', '$window', function ($rootScope, $scope, $window) {
+  $scope.windowSize = {
+    width: null,
+    height: null,
+
+    initialize: function () {
+      this.setEventListeners();
+      this.saveSize();
+    },
+
+    setEventListeners: function () {
+      $scope.$on('window:resized', this.saveSize.bind(this));
+    },
+
+    isDesktopWidth: function () {
+      return this.width > 1024;
+    },
+
+    saveSize: function () {
+      this.width = $window.innerWidth;
+      this.height = $window.innerHeight;
+
+      this._broadcastWindowSizeChanged();
+    },
+
+    _broadcastWindowSizeChanged: function () {
+      $scope.$broadcast('windowSize:changed');
+    }
+  };
+
+  var self = $scope.windowSize;
+
+  self.initialize();
+}]);
+
+app.directive('windowSize', ['$window', function ($window) {
+  return {
+    restrict: 'A',
+    controller: 'WindowSizeCtrl',
+    link: function (scope, el, attrs) {
+      scope.windowSize.view = {
+        initialize: function () {
+          this.setEventListeners();
+        },
+
+        setEventListeners: function () {
+          angular.element($window).on('resize', _.throttle(this._broadcastWindowResized, 300).bind(this));
+        },
+
+        _broadcastWindowResized: function () {
+          scope.$broadcast('window:resized');
+        }
+      };
+
+      var self = scope.windowSize.view;
+
+      self.initialize();
+    }
+  };
+}]);
+
 app.user = angular.module('app.user', []);
 /**
  * Controllers
@@ -668,7 +648,7 @@ app.user.controller('AuthCtrl', ['$scope', 'Auth', function ($scope, Auth) {
 
     initialize: function () {
       this.setEventListeners();
-      this.checkRequest();
+      this.checkAuthRequest();
     },
 
     setEventListeners: function () {
@@ -733,13 +713,13 @@ app.user.controller('AuthCtrl', ['$scope', 'Auth', function ($scope, Auth) {
       this.isRecovery() ? this.recoveryRequest() : this.loginRequest();
     },
 
-    checkRequest: function () {
+    checkAuthRequest: function () {
       Auth.get().$promise
-        .then(this._checkResponse.bind(this));
+        .then(this._handleCheckAuthResponse.bind(this));
     },
     
-    _checkResponse: function (res) {
-      $scope.user.authentication = res.authentication;
+    _handleCheckAuthResponse: function (res) {
+      $scope.user.setUser(res.user);
     },
 
     loginRequest: function () {
@@ -747,12 +727,13 @@ app.user.controller('AuthCtrl', ['$scope', 'Auth', function ($scope, Auth) {
           email: $scope.user.email,
           password: $scope.user.password
         }).$promise
-        .then(this._loginResponse(res).bind(this));
+        .then(this._handleLoginResponse.bind(this));
     },
 
-    _loginResponse: function (res) {
+    _handleLoginResponse: function (res) {
       var authentication = res.authentication;
-      $scope.user.authentication = authentication;
+
+      $scope.user.setUser(res.user);
 
       var message = authentication ? this.message.list.successResponse : this.message.list.errorResponse;
       this.message.setValue(message);
@@ -767,10 +748,10 @@ app.user.controller('AuthCtrl', ['$scope', 'Auth', function ($scope, Auth) {
           email: $scope.user.email,
           recovery: true
         }).$promise
-        .then(this._recoveryResponse(res).bind(this));
+        .then(this._handleRecoveryResponse.bind(this));
     },
 
-    _recoveryResponse: function (res) {
+    _handleRecoveryResponse: function (res) {
       var message = res.success ? this.message.list.successRecoveryResponse : this.message.list.errorRecoveryResponse;
       this.message.setValue(message);
     },
@@ -946,6 +927,8 @@ app.user.directive('profile', function () {
 app.user.controller('UserCtrl', ['$scope', function ($scope) {
   $scope.user = {
     authentication: false,
+    publisher: false,
+    admin: false,
 
     initialize: function () {
       this.setEventListeners();
@@ -955,8 +938,10 @@ app.user.controller('UserCtrl', ['$scope', function ($scope) {
       $scope.$on('popupPage:deactivated', this.hideUser.bind(this));
     },
 
-    isAuthenticated: function () {
-      return this.authentication;
+    setUser: function (user) {
+      this.authentication = user.authentication;
+      this.publisher = Boolean(user.publisher);
+      this.admin = Boolean(user.admin);
     },
 
     showUser: function () {
@@ -965,6 +950,22 @@ app.user.controller('UserCtrl', ['$scope', function ($scope) {
 
     hideUser: function () {
       this.isAuthenticated() ? this.profile.deactivate() : this.auth.deactivate();
+    },
+
+    isAuthenticated: function () {
+      return this.authentication;
+    },
+
+    isUsual: function () {
+      return !this.isAdmin() && !this.isAdmin();
+    },
+
+    isPublisher: function () {
+      return this.publisher;
+    },
+
+    isAdmin: function () {
+      return this.admin;
     }
   };
 

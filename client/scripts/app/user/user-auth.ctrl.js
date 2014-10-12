@@ -9,7 +9,7 @@ app.user.controller('AuthCtrl', ['$scope', 'Auth', function ($scope, Auth) {
 
     initialize: function () {
       this.setEventListeners();
-      this.checkRequest();
+      this.checkAuthRequest();
     },
 
     setEventListeners: function () {
@@ -74,13 +74,13 @@ app.user.controller('AuthCtrl', ['$scope', 'Auth', function ($scope, Auth) {
       this.isRecovery() ? this.recoveryRequest() : this.loginRequest();
     },
 
-    checkRequest: function () {
+    checkAuthRequest: function () {
       Auth.get().$promise
-        .then(this._checkResponse.bind(this));
+        .then(this._handleCheckAuthResponse.bind(this));
     },
     
-    _checkResponse: function (res) {
-      $scope.user.authentication = res.authentication;
+    _handleCheckAuthResponse: function (res) {
+      $scope.user.setUser(res.user);
     },
 
     loginRequest: function () {
@@ -88,12 +88,13 @@ app.user.controller('AuthCtrl', ['$scope', 'Auth', function ($scope, Auth) {
           email: $scope.user.email,
           password: $scope.user.password
         }).$promise
-        .then(this._loginResponse(res).bind(this));
+        .then(this._handleLoginResponse.bind(this));
     },
 
-    _loginResponse: function (res) {
+    _handleLoginResponse: function (res) {
       var authentication = res.authentication;
-      $scope.user.authentication = authentication;
+
+      $scope.user.setUser(res.user);
 
       var message = authentication ? this.message.list.successResponse : this.message.list.errorResponse;
       this.message.setValue(message);
@@ -108,10 +109,10 @@ app.user.controller('AuthCtrl', ['$scope', 'Auth', function ($scope, Auth) {
           email: $scope.user.email,
           recovery: true
         }).$promise
-        .then(this._recoveryResponse(res).bind(this));
+        .then(this._handleRecoveryResponse.bind(this));
     },
 
-    _recoveryResponse: function (res) {
+    _handleRecoveryResponse: function (res) {
       var message = res.success ? this.message.list.successRecoveryResponse : this.message.list.errorRecoveryResponse;
       this.message.setValue(message);
     },

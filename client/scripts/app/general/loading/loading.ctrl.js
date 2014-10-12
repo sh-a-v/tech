@@ -1,6 +1,6 @@
 app.controller('PreloadCtrl', ['$scope', function ($scope) {
-  $scope.preload = {
-    active: true,
+  $scope.loading = {
+    requests: [],
 
     initialize: function () {
       this.setEventListeners();
@@ -10,34 +10,24 @@ app.controller('PreloadCtrl', ['$scope', function ($scope) {
       $scope.$on('$viewContentLoaded', this.deactivate.bind(this));
     },
 
-    activate: function () {
-      if (this.isActive()) {
-        return;
-      }
-
-      this.active = true;
-      this._broadcastPreloadActivated();
+    addRequest: function (req) {
+      this.requests.push(req);
     },
 
-    deactivate: function () {
-      if (!this.isActive()) {
-        return;
-      }
-
-      this.active = false;
-      this._broadcastPreloadDeactivated();
+    removeRequest: function (req) {
+      this.requests = _.without(this.requests, req);
     },
 
     isActive: function () {
-      return this.active;
+      return Boolean(this.requests.length);
     },
 
     _broadcastPreloadActivated: function () {
-      $scope.$broadcast('preload:activated');
+      $scope.$broadcast('loading:activated');
     },
 
     _broadcastPreloadDeactivated: function () {
-      $scope.$broadcast('preload:deactivated');
+      $scope.$broadcast('loading:deactivated');
     }
   };
 

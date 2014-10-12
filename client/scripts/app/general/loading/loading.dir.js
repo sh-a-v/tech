@@ -4,23 +4,13 @@ app.directive('preload', ['$window', function ($window) {
     controller: 'PreloadCtrl',
     link: function (scope, el, attrs) {
       scope.preload.view = {
-        preloadEl: el,
+        loadingEl: el,
 
         initialize: function () {
-
+          this.setEventListeners();
         },
 
         setEventListeners: function () {
-          scope.$on('preload:activated', this.showPreload.bind(this));
-          scope.$on('preload:deactivated', this.hidePreload.bind(this));
-        },
-
-        showPreload: function () {
-          this.preloadEl.addClass('active');
-        },
-
-        hidePreload: function () {
-          this.preloadEl.removeClass('active');
         }
       };
 

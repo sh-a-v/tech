@@ -1,14 +1,13 @@
 'use strict';
 
-var
-    express = require('express'),
-    bookRouter = require('./router-controllers/book'),
+var express = require('express'),
+  bookRouter = require('./router-controllers/book');
 
-    apiRouter = express.Router();
+var apiRouter = express.Router();
 
 apiRouter.stack =
-    apiRouter.stack.concat(
-        bookRouter.stack
-    );
+  apiRouter.stack.concat(
+    bookRouter.stack
+  );
 
 module.exports = apiRouter;

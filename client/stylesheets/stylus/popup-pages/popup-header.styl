@@ -1,40 +1,12 @@
 .s-popup-header
-  display inline-block
-  width 100%
-  height header-height
-  box-sizing border-box
+  position relative
 
-  background-color white
+  border-bottom none
   text-align left
 
-  @media media-desktop
-    padding 0 5px 0 15px
-
   &-logo
-    display inline-block
-    height header-height
-    vertical-align top
-    line-height header-height
-
-    @media media-tablet
-      margin-left 10px
-    @media media-phone
-      margin-left 10px
-
-  &-name
-    display inline-block
-    height header-height
-
-    font-size 20px
-    line-height header-height
-    color asbestos-1
-
-    @media media-desktop
-      padding 0 15px
-    @media media-tablet
-      padding 0 10px
-    @media media-phone
-      padding 0 10px
+    &::after
+      border-color transparent
 
   &-button
     display inline-block
