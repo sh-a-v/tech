@@ -14,7 +14,7 @@ authRouter
         req.logIn(user, function (err) {});
 
       var response = {
-        success: Boolean(err),
+        success: !err,
         user: {
           authentication: req.isAuthenticated()
         }

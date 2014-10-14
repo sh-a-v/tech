@@ -30,7 +30,7 @@ app
   .use(compression())
   .use(bodyParser.json())
   .use(bodyParser.urlencoded({
-  extended: true
+    extended: true
   }))
   .use(session({
     secret: SETTINGS.secret,
